@@ -17,3 +17,9 @@ export default {
     tabIconSelected: tintColorDark,
   },
 };
+
+export const colors = {
+  textGray: '#737373',
+  buttonBlue: '#004282',
+  gray: '#eee',
+};
