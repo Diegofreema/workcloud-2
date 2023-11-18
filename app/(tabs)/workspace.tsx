@@ -5,8 +5,10 @@ type Props = {};
 
 const workspace = (props: Props) => {
   return (
-    <View>
-      <Text>workspace</Text>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
+        No workspaces yet
+      </Text>
     </View>
   );
 };

@@ -20,6 +20,10 @@ function TabBarIcon(props: {
 }) {
   return <FontAwesome style={{ marginBottom: -3 }} {...props} />;
 }
+export const unstable_settings = {
+  // Ensure that reloading on `/modal` keeps a back button present.
+  initialRouteName: '(tabs)/home',
+};
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -89,6 +93,19 @@ export default function TabLayout() {
             tabBarIcon: ({ focused, size }) => (
               <TabBarIcon
                 name="phone"
+                color={focused ? colors.buttonBlue : colors.gray}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="account"
+          options={{
+            title: 'Account',
+            tabBarIcon: ({ focused, size }) => (
+              <TabBarIcon
+                name="user"
                 color={focused ? colors.buttonBlue : colors.gray}
                 size={size}
               />

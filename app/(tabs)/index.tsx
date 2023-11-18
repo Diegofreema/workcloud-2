@@ -15,32 +15,33 @@ export default function TabOneScreen() {
 
   const loggedIn = isLoaded && userId;
   const { data, isLoading, isFetching, error, isPending } = useFollowers();
-  console.log('ERROR', error);
-
-  console.log(data);
 
   return (
     <View style={[defaultStyle, styles.container]}>
       <Header />
       {loggedIn && <ProfileHeader />}
-      <View style={styles.connections}>
-        <View
-          style={{
-            backgroundColor: colors.gray,
-            padding: 2,
-            paddingHorizontal: 5,
-            borderRadius: 10,
-          }}
-        >
-          <Text>Recent connections</Text>
+      {loggedIn ? (
+        <View style={styles.connections}>
+          <View
+            style={{
+              backgroundColor: colors.gray,
+              padding: 2,
+              paddingHorizontal: 5,
+              borderRadius: 10,
+            }}
+          >
+            <Text>Recent connections</Text>
+          </View>
+          <Text
+            onPress={() => router.push('/connections')}
+            style={{ color: colors.buttonBlue, fontWeight: 'bold' }}
+          >
+            See all connections
+          </Text>
         </View>
-        <Text
-          onPress={() => router.push('/connections')}
-          style={{ color: colors.buttonBlue, fontWeight: 'bold' }}
-        >
-          See all connections
-        </Text>
-      </View>
+      ) : (
+        <Text>Login in to see your connections</Text>
+      )}
 
       {isFetching || isLoading || isPending ? (
         <ActivityIndicator style={{ marginTop: 20 }} />
@@ -62,7 +63,7 @@ export default function TabOneScreen() {
                 variant="titleLarge"
                 style={{ fontWeight: 'bold', marginTop: 30 }}
               >
-                No connections yet
+                {loggedIn ? 'No connections yet' : ''}
               </Text>
             );
           }}

@@ -20,7 +20,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.diegodark.workcloud"
@@ -41,7 +41,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "0908c293-3f31-40f6-acb5-49550f354e21"
+        "projectId": "c6f4d0db-820e-41f4-9840-49346d4a94af"
       }
     }
   }

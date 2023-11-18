@@ -5,8 +5,8 @@ type Props = {};
 
 const messages = (props: Props) => {
   return (
-    <View>
-      <Text>messages</Text>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text style={{ fontSize: 20, fontWeight: 'bold' }}>No messages yet</Text>
     </View>
   );
 };

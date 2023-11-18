@@ -6,10 +6,10 @@ import {
 } from '@react-navigation/native';
 import { PaperProvider } from 'react-native-paper';
 import { useFonts } from 'expo-font';
-import { SplashScreen, Stack, useRouter } from 'expo-router';
+import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
-import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
+import { ClerkProvider } from '@clerk/clerk-expo';
 import * as SecureStore from 'expo-secure-store';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const ClerkKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
@@ -36,7 +36,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(auth)',
+  initialRouteName: '(tabs)',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -76,19 +76,13 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const router = useRouter();
   const colorScheme = useColorScheme();
-  const { isLoaded, isSignedIn } = useAuth();
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push('/(auth)/');
-    }
-  }, [isLoaded, isSignedIn]);
+
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+      <Stack initialRouteName="(tabs)">
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="connections" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
