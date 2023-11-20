@@ -8,6 +8,8 @@ import { ProfileHeader } from '../../components/ProfileHeader';
 import { colors } from '../../constants/Colors';
 import { useFollowers } from '../../lib/queries';
 import { ActivityIndicator, Text } from 'react-native-paper';
+import { useContext } from 'react';
+import { useDarkMode } from '../../hooks/useDarkMode';
 
 export default function TabOneScreen() {
   const router = useRouter();
@@ -15,7 +17,7 @@ export default function TabOneScreen() {
 
   const loggedIn = isLoaded && userId;
   const { data, isLoading, isFetching, error, isPending } = useFollowers();
-
+  const { darkMode } = useDarkMode();
   return (
     <View style={[defaultStyle, styles.container]}>
       <Header />
@@ -30,7 +32,9 @@ export default function TabOneScreen() {
               borderRadius: 10,
             }}
           >
-            <Text>Recent connections</Text>
+            <Text style={{ color: darkMode ? 'white' : 'black' }}>
+              Recent connections
+            </Text>
           </View>
           <Text
             onPress={() => router.push('/connections')}
@@ -40,11 +44,13 @@ export default function TabOneScreen() {
           </Text>
         </View>
       ) : (
-        <Text>Login in to see your connections</Text>
+        <Text style={{ color: darkMode ? 'white' : 'black' }}>
+          Login in to see your connections
+        </Text>
       )}
 
       {isFetching || isLoading || isPending ? (
-        <ActivityIndicator style={{ marginTop: 20 }} />
+        <ActivityIndicator style={{ marginTop: 20 }} animating />
       ) : (
         <FlatList
           contentContainerStyle={{
@@ -61,7 +67,11 @@ export default function TabOneScreen() {
             return (
               <Text
                 variant="titleLarge"
-                style={{ fontWeight: 'bold', marginTop: 30 }}
+                style={{
+                  fontWeight: 'bold',
+                  marginTop: 30,
+                  color: darkMode ? 'white' : 'black',
+                }}
               >
                 {loggedIn ? 'No connections yet' : ''}
               </Text>

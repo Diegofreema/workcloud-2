@@ -45,6 +45,9 @@ export default function TabLayout() {
             height: 50,
             paddingBottom: 5,
           },
+          tabBarLabelStyle: {
+            fontWeight: 'bold',
+          },
         }}
       >
         <Tabs.Screen
@@ -58,6 +61,7 @@ export default function TabLayout() {
                 size={size}
               />
             ),
+            tabBarActiveTintColor: colors.buttonBlue,
           }}
         />
         <Tabs.Screen
@@ -102,7 +106,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="account"
           options={{
-            title: 'Account',
+            title: 'Profile',
             tabBarIcon: ({ focused, size }) => (
               <TabBarIcon
                 name="user"

@@ -1,15 +1,19 @@
 import React from 'react';
 import * as WebBrowser from 'expo-web-browser';
-import { useOAuth } from '@clerk/clerk-expo';
+import { useAuth, useOAuth } from '@clerk/clerk-expo';
 import { useWarmUpBrowser } from '../../hooks/warmUpBrowser';
 import { Button, Text } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import { colors } from '../../constants/Colors';
 import { AuthTitle } from '../../components/AuthTitle';
 import { View } from 'react-native';
+import { useDarkMode } from '../../hooks/useDarkMode';
+import { supabase } from '../../lib/supabase';
 WebBrowser.maybeCompleteAuthSession();
 
 const SignInWithOAuth = () => {
+  const { darkMode } = useDarkMode();
+  const { userId } = useAuth();
   useWarmUpBrowser();
   const router = useRouter();
   const { startOAuthFlow } = useOAuth({ strategy: 'oauth_google' });
@@ -20,7 +24,15 @@ const SignInWithOAuth = () => {
 
       if (createdSessionId) {
         setActive!({ session: createdSessionId });
-        router.push('/(tabs)/');
+        const { data } = await supabase
+          .from('profile')
+          .select('user_id')
+          .eq('user_id', userId);
+        if (data) {
+          router.push('/(tabs)/');
+        } else {
+          router.push('/board');
+        }
       }
     } catch (err) {
       console.error('OAuth error', err);
@@ -30,7 +42,13 @@ const SignInWithOAuth = () => {
   return (
     <View style={{ flex: 1, paddingTop: 20 }}>
       <AuthTitle>Welcome, Login to continue</AuthTitle>
-      <Text style={{ marginTop: 20, color: colors.textGray }}>
+      <Text
+        style={{
+          marginTop: 20,
+
+          color: darkMode ? 'white' : colors.textGray,
+        }}
+      >
         Login to continue attending to customers
       </Text>
       <View style={{ marginTop: 30 }}>

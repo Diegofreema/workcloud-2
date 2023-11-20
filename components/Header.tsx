@@ -2,10 +2,12 @@ import { EvilIcons } from '@expo/vector-icons';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { colors } from '../constants/Colors';
+import { useDarkMode } from '../hooks/useDarkMode';
 
 type Props = {};
 
 export const Header = ({}: Props): JSX.Element => {
+  const { darkMode } = useDarkMode();
   return (
     <View style={styles.container}>
       <Text
@@ -19,9 +21,9 @@ export const Header = ({}: Props): JSX.Element => {
         Workcloud
       </Text>
       <View style={styles.subContainer}>
-        <EvilIcons name="search" size={28} color={'#000'} />
+        <EvilIcons name="search" size={28} color={darkMode ? '#fff' : '#000'} />
 
-        <EvilIcons name="bell" size={28} color={'#000'} />
+        <EvilIcons name="bell" size={28} color={darkMode ? '#fff' : '#000'} />
       </View>
     </View>
   );
