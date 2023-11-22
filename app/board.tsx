@@ -11,6 +11,8 @@ import RNPickerSelect from 'react-native-picker-select';
 import { supabase } from '../lib/supabase';
 import * as yup from 'yup';
 import dateFormat from 'dateformat';
+import { defaultStyle } from '../constants';
+import { AuthHeader } from '../components/AuthHeader';
 type Props = {};
 const validationSchema = yup.object().shape({
   firstName: yup.string().required('First name is required'),
@@ -96,11 +98,15 @@ const signup = (props: Props) => {
   console.log(date);
 
   return (
-    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-      <AuthTitle>Create an account</AuthTitle>
+    <ScrollView
+      style={{ flex: 1 }}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={defaultStyle}
+    >
+      <AuthHeader />
+      <AuthTitle>Complete your profile</AuthTitle>
       <Text style={{ marginTop: 20, color: colors.textGray }}>
-        Enter a valid email address either company email or personal email to
-        create an account
+        Enter your details below
       </Text>
       <View style={{ marginTop: 20, flex: 1 }}>
         <View style={{ flex: 0.6, gap: 10 }}>
@@ -243,12 +249,12 @@ export default signup;
 
 const styles2 = StyleSheet.create({
   border: {
-    backgroundColor: '#eee',
+    backgroundColor: '#E9E9E9',
     minHeight: 52,
     paddingLeft: 15,
     justifyContent: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: colors.textGray,
+    borderBottomColor: '#DADADA',
   },
 });
 const styles = StyleSheet.create({

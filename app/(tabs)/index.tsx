@@ -79,6 +79,7 @@ export default function TabOneScreen() {
           }}
         />
       )}
+      <Text onPress={() => router.push('/board')}>hsgdg</Text>
     </View>
   );
 }
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
   connections: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 20,
+
     alignItems: 'center',
   },
   container: {

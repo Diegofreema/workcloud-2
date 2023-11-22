@@ -40,7 +40,7 @@ const SignInWithOAuth = () => {
   };
 
   return (
-    <View style={{ flex: 1, paddingTop: 20 }}>
+    <View style={{ flex: 1 }}>
       <AuthTitle>Welcome, Login to continue</AuthTitle>
       <Text
         style={{
@@ -49,7 +49,7 @@ const SignInWithOAuth = () => {
           color: darkMode ? 'white' : colors.textGray,
         }}
       >
-        Login to continue attending to customers
+        Login to continue accessing organizations
       </Text>
       <View style={{ marginTop: 30 }}>
         <Button

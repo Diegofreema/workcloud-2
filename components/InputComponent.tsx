@@ -7,7 +7,7 @@ type Props = {
   onChangeText: (text: string) => void;
   secureTextEntry?: boolean;
   keyboardType?: 'default' | 'numeric' | 'email-address' | 'phone-pad';
-
+  label?: string;
   setToggle?: () => void;
   password?: boolean;
   id?: string;
@@ -22,6 +22,7 @@ export const InputComponent = ({
   setToggle,
   id,
   password,
+  label,
 }: Props): JSX.Element => {
   const handleToggle = (inputId: string) => {
     if (id === inputId) {
@@ -29,22 +30,30 @@ export const InputComponent = ({
     }
   };
   return (
-    <TextInput
-      right={
-        password && (
-          <TextInput.Icon
-            id={id}
-            icon={secureTextEntry ? 'eye' : 'eye-off'}
-            onPress={() => handleToggle(id as string)}
-          />
-        )
-      }
-      placeholder={placeholder}
-      value={value}
-      onChangeText={onChangeText}
-      keyboardType={keyboardType}
-      secureTextEntry={secureTextEntry}
-    />
+    <>
+      {label && (
+        <Text style={{ marginBottom: 5, fontWeight: 'bold' }}>{label}</Text>
+      )}
+      <TextInput
+        style={{
+          backgroundColor: '#E9E9E9',
+        }}
+        right={
+          password && (
+            <TextInput.Icon
+              id={id}
+              icon={secureTextEntry ? 'eye' : 'eye-off'}
+              onPress={() => handleToggle(id as string)}
+            />
+          )
+        }
+        placeholder={placeholder}
+        value={value}
+        onChangeText={onChangeText}
+        keyboardType={keyboardType}
+        secureTextEntry={secureTextEntry}
+      />
+    </>
   );
 };
 

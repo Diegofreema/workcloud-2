@@ -9,9 +9,18 @@ type Props = {};
 export const AuthHeader = (props: Props) => {
   const router = useRouter();
   const { darkMode } = useDarkMode();
+  const pathname = usePathname();
+
+  const navigator = () => {
+    if (pathname === '/board') {
+      router.push('/(tabs)/');
+    } else {
+      router.back();
+    }
+  };
 
   return (
-    <Pressable onPress={() => router.back()} style={{ marginBottom: 14 }}>
+    <Pressable onPress={navigator} style={{ marginBottom: 14 }}>
       <FontAwesome
         name="angle-left"
         size={35}

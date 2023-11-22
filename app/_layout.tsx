@@ -11,13 +11,14 @@ import { useEffect, useState } from 'react';
 import { useColorScheme, StatusBar as StatusBars } from 'react-native';
 import { ClerkProvider } from '@clerk/clerk-expo';
 import * as SecureStore from 'expo-secure-store';
-
+import Toast from 'react-native-toast-message';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { EventRegister } from 'react-native-event-listeners';
 import { useDarkMode } from '../hooks/useDarkMode';
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView } from 'react-native';
+
 import { Platform } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 const ClerkKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 const tokenCache = {
   async getToken(key: string) {
@@ -75,6 +76,7 @@ export default function RootLayout() {
       <QueryClientProvider client={queryClient}>
         <PaperProvider>
           <RootLayoutNav />
+          <Toast />
         </PaperProvider>
       </QueryClientProvider>
     </ClerkProvider>
@@ -86,13 +88,10 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={darkMode ? DarkTheme : DefaultTheme}>
-      <StatusBar style={darkMode ? 'light' : 'dark'} />
+      <StatusBar style={'auto'} />
       <SafeAreaView
         style={{
-          paddingTop: Platform.OS === 'android' ? StatusBars.currentHeight : 0,
           flex: 1,
-
-          marginTop: 10,
         }}
       >
         <Stack initialRouteName="(tabs)">

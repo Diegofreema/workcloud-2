@@ -1,14 +1,9 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Tabs } from 'expo-router';
-import {
-  Platform,
-  Pressable,
-  SafeAreaView,
-  StatusBar,
-  useColorScheme,
-} from 'react-native';
+import { Platform, Pressable, StatusBar, useColorScheme } from 'react-native';
 
 import Colors, { colors } from '../../constants/Colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -31,10 +26,9 @@ export default function TabLayout() {
   return (
     <SafeAreaView
       style={{
-        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
         flex: 1,
 
-        marginTop: 10,
+        marginTop: -10,
       }}
     >
       <Tabs
@@ -80,7 +74,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="workspace"
           options={{
-            title: 'Workspace',
+            title: 'Organizations',
             tabBarIcon: ({ focused, size }) => (
               <TabBarIcon
                 name="briefcase"

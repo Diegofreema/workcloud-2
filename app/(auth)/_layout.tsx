@@ -1,6 +1,7 @@
-import { Platform, SafeAreaView, StatusBar, StyleSheet } from 'react-native';
+import { Platform, StatusBar, StyleSheet } from 'react-native';
 import { Stack } from 'expo-router';
 import { AuthHeader } from '../../components/AuthHeader';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = {};
 
@@ -8,10 +9,10 @@ const AuthLayout = (props: Props) => {
   return (
     <SafeAreaView
       style={{
-        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
         flex: 1,
         marginHorizontal: 20,
-        marginTop: 10,
+
+        marginTop: -30,
       }}
     >
       <AuthHeader />
