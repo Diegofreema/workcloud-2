@@ -79,7 +79,6 @@ export default function TabOneScreen() {
           }}
         />
       )}
-      <Text onPress={() => router.push('/board')}>hsgdg</Text>
     </View>
   );
 }

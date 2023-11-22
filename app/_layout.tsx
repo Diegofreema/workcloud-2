@@ -100,6 +100,10 @@ function RootLayoutNav() {
           <Stack.Screen name="connections" options={{ headerShown: false }} />
           <Stack.Screen name="board" options={{ headerShown: false }} />
           <Stack.Screen
+            name="organization/[organizationId]"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
             name="create-workspace"
             options={{ headerShown: false }}
           />

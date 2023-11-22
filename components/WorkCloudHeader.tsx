@@ -13,12 +13,7 @@ export const WorkCloudHeader = ({}: Props): JSX.Element => {
   const router = useRouter();
   return (
     <>
-      <View
-        style={[
-          defaultStyle,
-          { flexDirection: 'row', justifyContent: 'space-between' },
-        ]}
-      >
+      <View style={[{ flexDirection: 'row', justifyContent: 'space-between' }]}>
         <Text
           variant="titleLarge"
           style={{ fontWeight: 'bold', color: darkMode ? 'white' : 'black' }}
@@ -32,7 +27,7 @@ export const WorkCloudHeader = ({}: Props): JSX.Element => {
         >
           <FontAwesome
             name="search"
-            size={30}
+            size={20}
             color={darkMode ? 'white' : 'black'}
           />
         </Pressable>
@@ -41,7 +36,6 @@ export const WorkCloudHeader = ({}: Props): JSX.Element => {
       <Pressable
         onPress={() => router.push('/create-workspace')}
         style={[
-          defaultStyle,
           {
             flexDirection: 'row',
             gap: 10,
@@ -60,7 +54,7 @@ export const WorkCloudHeader = ({}: Props): JSX.Element => {
             name="plus-circle"
             size={15}
             color={colors.lightBlue}
-            style={{ position: 'absolute', bottom: 0, right: 0 }}
+            style={{ position: 'absolute', bottom: 5, right: 3 }}
           />
         </View>
         <Text style={{ maxWidth: 100 }}>Create an organization</Text>

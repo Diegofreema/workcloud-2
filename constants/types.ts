@@ -15,7 +15,7 @@ export type Organization = {
   category: string;
   work_days: string;
   description: string;
-  imageUrl: string;
+  image_url: string;
   email: string;
   active: boolean;
   leisure: boolean;

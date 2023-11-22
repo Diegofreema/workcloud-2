@@ -29,7 +29,7 @@ const SignInWithOAuth = () => {
           .select('user_id')
           .eq('user_id', userId);
         if (data) {
-          router.push('/(tabs)/');
+          router.push('/(tabs)');
         } else {
           router.push('/board');
         }

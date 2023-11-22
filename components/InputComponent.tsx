@@ -1,5 +1,6 @@
 import { StyleSheet, View, Text } from 'react-native';
 import { TextInput } from 'react-native-paper';
+import { useDarkMode } from '../hooks/useDarkMode';
 
 type Props = {
   placeholder: string;
@@ -11,6 +12,7 @@ type Props = {
   setToggle?: () => void;
   password?: boolean;
   id?: string;
+  numberOfLines?: number;
 };
 
 export const InputComponent = ({
@@ -23,7 +25,9 @@ export const InputComponent = ({
   id,
   password,
   label,
+  numberOfLines,
 }: Props): JSX.Element => {
+  const { darkMode } = useDarkMode();
   const handleToggle = (inputId: string) => {
     if (id === inputId) {
       setToggle && setToggle();
@@ -32,9 +36,18 @@ export const InputComponent = ({
   return (
     <>
       {label && (
-        <Text style={{ marginBottom: 5, fontWeight: 'bold' }}>{label}</Text>
+        <Text
+          style={{
+            marginBottom: 5,
+            fontWeight: 'bold',
+            color: darkMode ? 'white' : 'black',
+          }}
+        >
+          {label}
+        </Text>
       )}
       <TextInput
+        numberOfLines={numberOfLines}
         style={{
           backgroundColor: '#E9E9E9',
         }}

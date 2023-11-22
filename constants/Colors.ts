@@ -23,4 +23,6 @@ export const colors = {
   buttonBlue: '#004282',
   gray: '#eee',
   lightBlue: '#1A91FF',
+  white: '#fff',
+  black: '#000',
 };

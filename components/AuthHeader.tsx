@@ -12,11 +12,7 @@ export const AuthHeader = (props: Props) => {
   const pathname = usePathname();
 
   const navigator = () => {
-    if (pathname === '/board') {
-      router.push('/(tabs)/');
-    } else {
-      router.back();
-    }
+    router.push('/(tabs)');
   };
 
   return (

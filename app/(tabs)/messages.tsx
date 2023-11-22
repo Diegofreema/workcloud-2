@@ -1,11 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { useDarkMode } from '../../hooks/useDarkMode';
+import { useRouter } from 'expo-router';
 
 type Props = {};
 
 const messages = (props: Props) => {
   const { darkMode } = useDarkMode();
+  const router = useRouter();
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text
@@ -17,6 +19,7 @@ const messages = (props: Props) => {
       >
         No messages yet
       </Text>
+      <Text onPress={() => router.push('/board')}>hsgdg</Text>
     </View>
   );
 };

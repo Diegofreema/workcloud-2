@@ -6,41 +6,40 @@ import Colors, { colors } from '../constants/Colors';
 import { InputComponent } from '../components/InputComponent';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useFormik } from 'formik';
-import { useRouter } from 'expo-router';
+import { Redirect, useRouter } from 'expo-router';
 import RNPickerSelect from 'react-native-picker-select';
 import { supabase } from '../lib/supabase';
 import * as yup from 'yup';
 import dateFormat from 'dateformat';
 import { defaultStyle } from '../constants';
 import { AuthHeader } from '../components/AuthHeader';
+import { useDarkMode } from '../hooks/useDarkMode';
+import Toast from 'react-native-toast-message';
+import { useUser } from '@clerk/clerk-expo';
 type Props = {};
 const validationSchema = yup.object().shape({
   firstName: yup.string().required('First name is required'),
   lastName: yup.string().required('Last name is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
-  password: yup
-    .string()
-    .min(6, 'Password must be at least 6 characters')
-    .required('Password is required'),
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref('password')], 'Passwords must match')
-    .required('Confirm Password is required'),
+
   gender: yup.string().required('Gender is required'),
 });
 const signup = (props: Props) => {
-  const [secured, setShowPassword] = useState(true);
-  const [secured2, setShowPassword2] = useState(true);
-
+  const { darkMode } = useDarkMode();
+  const { isLoaded, isSignedIn, user } = useUser();
   const [date, setDate] = useState(new Date(1598051730000));
 
   const [show, setShow] = useState(false);
   const router = useRouter();
-  // const onChange = (event: ChangeEvent<any>, selectedDate) => {
-  //   const currentDate = selectedDate;
-  //   setShow(false);
-  //   setDate(currentDate);
-  // };
+  if (isLoaded && !isSignedIn) {
+    Toast.show({
+      type: 'error',
+      text1: 'Unauthorized',
+      text2: 'Please login to continue',
+    });
+    router.push('/login');
+    return;
+  }
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
@@ -63,38 +62,46 @@ const signup = (props: Props) => {
     initialValues: {
       email: '',
       password: '',
-      firstName: '',
-      lastName: '',
+      firstName: user?.firstName || '',
+      lastName: user?.lastName || '',
 
       gender: '',
-      confirmPassword: '',
     },
     validationSchema,
     onSubmit: async (values) => {
-      const { email, firstName, gender, lastName, password } = values;
-      const { data, error } = await supabase.auth.signUp({
+      const { email, firstName, gender, lastName } = values;
+      const { error } = await supabase.from('profile').insert({
         email,
-        password,
-        options: {
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-            gender,
-            date_of_birth: date,
-          },
-        },
+        name: `${firstName} ${lastName}`,
+        user_id: 'userId',
+        gender,
+        boarded: true,
+        avatarUrl: user?.imageUrl || '',
+        date_of_birth: dateFormat(date, 'isoDate'),
       });
+      if (!error) {
+        Toast.show({
+          type: 'success',
+          text1: 'Welcome to Workcloud',
+          text2: `${firstName.toUpperCase()} your  profile was created`,
+        });
+
+        router.push('/(tabs)');
+      }
       console.log(values);
 
       if (error) {
-        console.log(error);
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: error.message,
+        });
       }
     },
   });
   console.log(errors);
 
-  const { email, firstName, gender, lastName, password, confirmPassword } =
-    values;
+  const { email, firstName, gender, lastName } = values;
   console.log(date);
 
   return (
@@ -112,6 +119,7 @@ const signup = (props: Props) => {
         <View style={{ flex: 0.6, gap: 10 }}>
           <>
             <InputComponent
+              label="Email"
               value={email}
               onChangeText={handleChange('email')}
               placeholder="Email"
@@ -125,6 +133,7 @@ const signup = (props: Props) => {
           </>
           <>
             <InputComponent
+              label="First Name"
               value={firstName}
               onChangeText={handleChange('firstName')}
               placeholder="First Name"
@@ -138,6 +147,7 @@ const signup = (props: Props) => {
           </>
           <>
             <InputComponent
+              label="Last Name"
               value={lastName}
               onChangeText={handleChange('lastName')}
               placeholder="Last Name"
@@ -150,6 +160,14 @@ const signup = (props: Props) => {
             )}
           </>
           <>
+            <Text
+              style={{
+                color: darkMode ? colors.white : colors.black,
+                fontWeight: 'bold',
+              }}
+            >
+              Date of birth
+            </Text>
             <Pressable onPress={showMode} style={styles2.border}>
               <Text>
                 {' '}
@@ -174,6 +192,14 @@ const signup = (props: Props) => {
           )}
 
           <>
+            <Text
+              style={{
+                color: darkMode ? colors.white : colors.black,
+                fontWeight: 'bold',
+              }}
+            >
+              Gender
+            </Text>
             <View style={styles2.border}>
               <RNPickerSelect
                 value={gender}
@@ -188,44 +214,6 @@ const signup = (props: Props) => {
             {touched.gender && errors.gender && (
               <Text style={{ color: 'red', fontWeight: 'bold' }}>
                 {errors.gender}
-              </Text>
-            )}
-          </>
-          <>
-            <TextInput
-              right={
-                <TextInput.Icon
-                  icon={secured ? 'eye-off' : 'eye'}
-                  onPress={() => setShowPassword(!secured)}
-                />
-              }
-              placeholder={'Password'}
-              value={password}
-              onChangeText={handleChange('password')}
-              secureTextEntry={secured}
-            />
-            {touched.password && errors.password && (
-              <Text style={{ color: 'red', fontWeight: 'bold' }}>
-                {errors.password}
-              </Text>
-            )}
-          </>
-          <>
-            <TextInput
-              right={
-                <TextInput.Icon
-                  icon={secured2 ? 'eye-off' : 'eye'}
-                  onPress={() => setShowPassword2(!secured2)}
-                />
-              }
-              placeholder={'Confirm Password'}
-              value={confirmPassword}
-              onChangeText={handleChange('confirmPassword')}
-              secureTextEntry={secured2}
-            />
-            {touched.confirmPassword && errors.confirmPassword && (
-              <Text style={{ color: 'red', fontWeight: 'bold' }}>
-                {errors.confirmPassword}
               </Text>
             )}
           </>

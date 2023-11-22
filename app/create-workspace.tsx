@@ -17,7 +17,7 @@ import { decode } from 'base64-arraybuffer';
 import * as FileSystem from 'expo-file-system';
 import { Button } from 'react-native-paper';
 import { useFormik } from 'formik';
-import { useAuth } from '@clerk/clerk-expo';
+import { useAuth, useUser } from '@clerk/clerk-expo';
 import Toast from 'react-native-toast-message';
 import DocumentPicker, {
   isCancel,
@@ -37,6 +37,7 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
+import { useQueryClient } from '@tanstack/react-query';
 const validationSchema = yup.object().shape({
   organization_name: yup.string().required('Name of organization is required'),
   category: yup.string().required('Category is required'),
@@ -58,12 +59,14 @@ const CreateWorkSpace = (props: Props) => {
   const [imageName, setImageName] = useState<ArrayBuffer>();
   const [imageType, setImageType] = useState('');
   const [image, setImage] = useState<string>('');
-  const { isLoaded, userId } = useAuth();
+  const { isLoaded, isSignedIn, user } = useUser();
+
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
   const { darkMode } = useDarkMode();
   const router = useRouter();
   const [file, setFile] = useState<FileObject[]>([]);
+  const queryClient = useQueryClient();
   useEffect(() => {
     loadImage(imagePath);
   }, [imagePath, imageName, imageType]);
@@ -75,7 +78,16 @@ const CreateWorkSpace = (props: Props) => {
 
     setImage(finalImageUrl);
   };
-  console.log(image);
+
+  if (isLoaded && !isSignedIn) {
+    Toast.show({
+      type: 'error',
+      text1: 'Unauthorized',
+      text2: 'Please login to continue',
+    });
+    router.push('/login');
+    return;
+  }
 
   const onSelectImage = async () => {
     const options: ImagePicker.ImagePickerOptions = {
@@ -88,7 +100,7 @@ const CreateWorkSpace = (props: Props) => {
     // Save image if not cancelled
     if (!result.canceled) {
       const img = result.assets[0];
-      console.log(img);
+      console.log('91', img);
 
       const base64 = await FileSystem.readAsStringAsync(img.uri, {
         encoding: 'base64',
@@ -110,7 +122,7 @@ const CreateWorkSpace = (props: Props) => {
       }
     }
   };
-  console.log(image.split('/').slice(0, -1).join('/'));
+  console.log('113', image.split('/').slice(0, -1).join('/'));
 
   const onRemove = async () => {
     const { data, error } = await supabase.storage
@@ -153,7 +165,7 @@ const CreateWorkSpace = (props: Props) => {
         location,
         organization_name,
         startDay,
-
+        description,
         website_url,
       } = values;
 
@@ -167,8 +179,8 @@ const CreateWorkSpace = (props: Props) => {
         website: website_url,
         location,
         opening_time: startTime,
-        owner_id: 'userId',
-        image_url: image,
+        owner_id: user?.id,
+        image_url: image.split('/').slice(0, -1).join('/'),
       });
 
       if (!error) {
@@ -177,20 +189,19 @@ const CreateWorkSpace = (props: Props) => {
           text1: 'Success',
           text2: 'Organization created successfully',
         });
-        resetForm();
+        queryClient.invalidateQueries({ queryKey: ['organizations'] });
         router.push('/workspace');
+        return;
       }
       if (error) {
-        Toast.show({
+        return Toast.show({
           type: 'error',
           text1: 'Error',
           text2: error.message,
         });
       }
-      console.log(error);
     },
   });
-  console.log(errors);
 
   const onChange = (event: any, selectedDate: any, type: string) => {
     const currentDate = selectedDate;
@@ -243,7 +254,7 @@ const CreateWorkSpace = (props: Props) => {
                 <Image
                   contentFit="cover"
                   style={{ width: 100, height: 100, borderRadius: 50 }}
-                  source={image}
+                  source={image.split('/').slice(0, -1).join('/')}
                 />
                 <TouchableOpacity
                   style={{
@@ -312,6 +323,7 @@ const CreateWorkSpace = (props: Props) => {
               onChangeText={handleChange('description')}
               placeholder="Description"
               keyboardType="default"
+              numberOfLines={5}
             />
             {touched.description && errors.description && (
               <Text style={{ color: 'red', fontWeight: 'bold' }}>
@@ -478,7 +490,7 @@ const CreateWorkSpace = (props: Props) => {
             onPress={() => handleSubmit()}
             buttonColor={colors.buttonBlue}
           >
-            {isSubmitting ? 'Creating Organization' : 'Create Organization'}
+            {isSubmitting ? 'Creating...' : 'Create'}
           </Button>
         </View>
       </View>
