@@ -1,25 +1,37 @@
 import { FlatList, StyleSheet, View } from 'react-native';
 
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { defaultStyle } from '../../constants';
 import { Header } from '../../components/Header';
 import { useAuth } from '@clerk/clerk-expo';
 import { ProfileHeader } from '../../components/ProfileHeader';
 import { colors } from '../../constants/Colors';
-import { useFollowers } from '../../lib/queries';
+import { useFollowers, usePersonalOrgs } from '../../lib/queries';
 import { ActivityIndicator, Text } from 'react-native-paper';
-import { useContext } from 'react';
+import { useContext, useCallback, useEffect, useLayoutEffect } from 'react';
 import { useDarkMode } from '../../hooks/useDarkMode';
+import { useOrganizationModal } from '../../hooks/useOrganizationModal';
+import { OrganizationModal } from '../../components/OrganizationModal';
 
 export default function TabOneScreen() {
   const router = useRouter();
   const { isLoaded, userId } = useAuth();
-
+  const { data: orgs } = usePersonalOrgs();
   const loggedIn = isLoaded && userId;
+  const { onOpen } = useOrganizationModal();
+  const openModal = useCallback(() => {
+    if (orgs?.orgs && orgs?.orgs.length < 1) {
+      onOpen();
+    }
+  }, []);
+  useFocusEffect(() => {
+    openModal();
+  });
   const { data, isLoading, isFetching, error, isPending } = useFollowers();
   const { darkMode } = useDarkMode();
   return (
     <View style={[defaultStyle, styles.container]}>
+      <OrganizationModal />
       <Header />
       {loggedIn && <ProfileHeader />}
       {loggedIn ? (

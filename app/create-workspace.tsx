@@ -152,12 +152,12 @@ const CreateWorkSpace = (props: Props) => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      // if (isLoaded && !userId)
-      //   return Toast.show({
-      //     type: 'error',
-      //     text1: 'Unauthorized',
-      //     text2: 'Please login to continue',
-      //   });
+      if (isLoaded && !user?.id)
+        return Toast.show({
+          type: 'error',
+          text1: 'Unauthorized',
+          text2: 'Please login to continue',
+        });
       const {
         email,
         category,
@@ -434,7 +434,7 @@ const CreateWorkSpace = (props: Props) => {
                   <Text>
                     {' '}
                     {`${
-                      dateFormat(startTime, 'HH:MM') || ' Date Of Birth'
+                      dateFormat(startTime, 'HH:MM') || ' Opening Time'
                     }`}{' '}
                   </Text>
                 </Pressable>
@@ -460,7 +460,7 @@ const CreateWorkSpace = (props: Props) => {
                 <Pressable onPress={showMode2} style={styles2.border}>
                   <Text>
                     {' '}
-                    {`${dateFormat(endTime, 'HH:MM') || ' Date Of Birth'}`}{' '}
+                    {`${dateFormat(endTime, 'HH:MM') || ' Closing Time'}`}{' '}
                   </Text>
                 </Pressable>
                 {/* {touched.date && errors.date && (

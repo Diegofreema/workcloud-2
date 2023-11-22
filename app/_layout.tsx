@@ -107,6 +107,10 @@ function RootLayoutNav() {
             name="create-workspace"
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name="(organization)/organizations"
+            options={{ headerShown: false }}
+          />
         </Stack>
       </SafeAreaView>
     </ThemeProvider>

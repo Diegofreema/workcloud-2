@@ -26,7 +26,7 @@ export const usePersonalOrgs = () => {
     const { data, error } = await supabase
       .from('workspace')
       .select()
-      .eq('owner_id', 'userId');
+      .eq('owner_id', userId);
 
     return {
       orgs: data as Organization[],
@@ -44,7 +44,7 @@ export const useAssignedOrgs = () => {
     const { data, error } = await supabase
       .from('profile')
       .select('workspace_id(*)')
-      .eq('user_id', 'userId');
+      .eq('user_id', userId);
 
     return {
       orgs: data,

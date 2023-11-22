@@ -13,7 +13,6 @@ type Props = {};
 const workspace = (props: Props) => {
   const { darkMode } = useDarkMode();
   const { data, isFetching, isLoading, isPending, refetch } = usePersonalOrgs();
-  console.log(data);
 
   return (
     <View style={{ flex: 1, ...defaultStyle }}>

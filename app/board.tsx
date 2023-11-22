@@ -1,12 +1,12 @@
 import { View, ScrollView, StyleSheet, Pressable } from 'react-native';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { AuthTitle } from '../components/AuthTitle';
 import { Button, Text, TextInput } from 'react-native-paper';
 import Colors, { colors } from '../constants/Colors';
 import { InputComponent } from '../components/InputComponent';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useFormik } from 'formik';
-import { Redirect, useRouter } from 'expo-router';
+import { Redirect, useFocusEffect, useRouter } from 'expo-router';
 import RNPickerSelect from 'react-native-picker-select';
 import { supabase } from '../lib/supabase';
 import * as yup from 'yup';
@@ -27,28 +27,51 @@ const validationSchema = yup.object().shape({
 const signup = (props: Props) => {
   const { darkMode } = useDarkMode();
   const { isLoaded, isSignedIn, user } = useUser();
-  const [date, setDate] = useState(new Date(1598051730000));
+  const [date, setDate] = useState(new Date());
+  const [error, setError] = useState(false);
+
+  useEffect(() => {}, [error]);
 
   const [show, setShow] = useState(false);
   const router = useRouter();
-  if (isLoaded && !isSignedIn) {
-    Toast.show({
-      type: 'error',
-      text1: 'Unauthorized',
-      text2: 'Please login to continue',
-    });
-    router.push('/login');
-    return;
-  }
+  // useFocusEffect(() => {
+  //   if (isLoaded && !isSignedIn) {
+  //     Toast.show({
+  //       type: 'error',
+  //       text1: 'Unauthorized',
+  //       text2: 'Please login to continue',
+  //     });
+  //     router.replace('/login');
+  //   }
+  // });
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
     setShow(false);
     setDate(currentDate);
+    setError(false);
   };
   const showMode = () => {
     setShow(true);
   };
+
+  const currentDate = new Date();
+  const userDateOfBirth = new Date(date);
+
+  const currentMonth = currentDate.getMonth();
+  const currentDay = currentDate.getDate();
+  const birthMonth = userDateOfBirth.getMonth();
+  const birthDay = userDateOfBirth.getDate();
+
+  let differenceInYears =
+    currentDate.getFullYear() - userDateOfBirth.getFullYear();
+
+  if (
+    birthMonth > currentMonth ||
+    (birthMonth === currentMonth && birthDay > currentDay)
+  ) {
+    differenceInYears--;
+  }
 
   const {
     values,
@@ -69,11 +92,19 @@ const signup = (props: Props) => {
     },
     validationSchema,
     onSubmit: async (values) => {
+      if (differenceInYears < 18) {
+        setError(true);
+        return;
+      }
+      if (date === new Date()) {
+        setError(true);
+        return;
+      }
       const { email, firstName, gender, lastName } = values;
       const { error } = await supabase.from('profile').insert({
         email,
         name: `${firstName} ${lastName}`,
-        user_id: 'userId',
+        user_id: user?.id,
         gender,
         boarded: true,
         avatarUrl: user?.imageUrl || '',
@@ -174,11 +205,11 @@ const signup = (props: Props) => {
                 {`${dateFormat(date, 'dd/mm/yyyy') || ' Date Of Birth'}`}{' '}
               </Text>
             </Pressable>
-            {/* {touched.date && errors.date && (
+            {error && (
               <Text style={{ color: 'red', fontWeight: 'bold' }}>
-                {errors.date}
+                {'Please select date of birth'}
               </Text>
-            )} */}
+            )}
           </>
 
           {show && (
