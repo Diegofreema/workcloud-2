@@ -17,16 +17,17 @@ export default function TabOneScreen() {
   const router = useRouter();
   const { isLoaded, userId } = useAuth();
   const { data: orgs } = usePersonalOrgs();
-  const loggedIn = isLoaded && userId;
+
+  const loggedIn = isLoaded && !!userId;
   const { onOpen } = useOrganizationModal();
-  const openModal = useCallback(() => {
-    if (orgs?.orgs && orgs?.orgs.length < 1) {
-      onOpen();
-    }
-  }, []);
-  useFocusEffect(() => {
-    openModal();
-  });
+
+  useFocusEffect(
+    useCallback(() => {
+      if (orgs?.orgs.length === 0) {
+        onOpen();
+      }
+    }, [])
+  );
   const { data, isLoading, isFetching, error, isPending } = useFollowers();
   const { darkMode } = useDarkMode();
   return (
@@ -38,7 +39,7 @@ export default function TabOneScreen() {
         <View style={styles.connections}>
           <View
             style={{
-              backgroundColor: colors.gray,
+              backgroundColor: darkMode ? colors.black : colors.gray,
               padding: 2,
               paddingHorizontal: 5,
               borderRadius: 10,
@@ -101,6 +102,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
 
     alignItems: 'center',
+    marginTop: 10,
   },
   container: {
     flex: 1,

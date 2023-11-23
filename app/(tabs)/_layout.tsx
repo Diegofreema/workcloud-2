@@ -4,6 +4,7 @@ import { Platform, Pressable, StatusBar, useColorScheme } from 'react-native';
 
 import Colors, { colors } from '../../constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Text } from 'react-native-paper';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -28,7 +29,7 @@ export default function TabLayout() {
       style={{
         flex: 1,
 
-        marginTop: -10,
+        marginTop: -11,
       }}
     >
       <Tabs
@@ -55,7 +56,17 @@ export default function TabLayout() {
                 size={size}
               />
             ),
-            tabBarActiveTintColor: colors.buttonBlue,
+            tabBarLabel: ({ focused }) => (
+              <Text
+                style={{
+                  color: focused ? colors.buttonBlue : colors.gray,
+                  fontWeight: 'bold',
+                  fontSize: 11,
+                }}
+              >
+                Home
+              </Text>
+            ),
           }}
         />
         <Tabs.Screen
@@ -68,6 +79,17 @@ export default function TabLayout() {
                 color={focused ? colors.buttonBlue : colors.gray}
                 size={size}
               />
+            ),
+            tabBarLabel: ({ focused }) => (
+              <Text
+                style={{
+                  color: focused ? colors.buttonBlue : colors.gray,
+                  fontWeight: 'bold',
+                  fontSize: 11,
+                }}
+              >
+                Messages
+              </Text>
             ),
           }}
         />
@@ -82,6 +104,17 @@ export default function TabLayout() {
                 size={size}
               />
             ),
+            tabBarLabel: ({ focused }) => (
+              <Text
+                style={{
+                  color: focused ? colors.buttonBlue : colors.gray,
+                  fontWeight: 'bold',
+                  fontSize: 11,
+                }}
+              >
+                Organizations
+              </Text>
+            ),
           }}
         />
         <Tabs.Screen
@@ -95,6 +128,17 @@ export default function TabLayout() {
                 size={size}
               />
             ),
+            tabBarLabel: ({ focused }) => (
+              <Text
+                style={{
+                  color: focused ? colors.buttonBlue : colors.gray,
+                  fontWeight: 'bold',
+                  fontSize: 11,
+                }}
+              >
+                Call logs
+              </Text>
+            ),
           }}
         />
         <Tabs.Screen
@@ -107,6 +151,17 @@ export default function TabLayout() {
                 color={focused ? colors.buttonBlue : colors.gray}
                 size={size}
               />
+            ),
+            tabBarLabel: ({ focused }) => (
+              <Text
+                style={{
+                  color: focused ? colors.buttonBlue : colors.gray,
+                  fontWeight: 'bold',
+                  fontSize: 11,
+                }}
+              >
+                Profile
+              </Text>
             ),
           }}
         />

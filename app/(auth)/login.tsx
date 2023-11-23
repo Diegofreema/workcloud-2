@@ -28,7 +28,7 @@ const SignInWithOAuth = () => {
           .from('profile')
           .select('user_id')
           .eq('user_id', userId);
-        if (data) {
+        if (!data?.length) {
           router.push('/(tabs)');
         } else {
           router.push('/board');
@@ -40,7 +40,7 @@ const SignInWithOAuth = () => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, paddingTop: 20 }}>
       <AuthTitle>Welcome, Login to continue</AuthTitle>
       <Text
         style={{

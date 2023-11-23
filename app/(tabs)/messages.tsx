@@ -19,7 +19,6 @@ const messages = (props: Props) => {
       >
         No messages yet
       </Text>
-      <Text onPress={() => router.push('/board')}>hsgdg</Text>
     </View>
   );
 };

@@ -29,7 +29,7 @@ export const OrganizationModal = ({}: Props): JSX.Element => {
             variant="titleMedium"
             style={{ textAlign: 'center', fontWeight: 'bold' }}
           >
-            Hi {user?.firstName || 'Diego'}{' '}
+            Hi {user?.firstName || ''}
           </Text>
           <Feather
             name="x"
@@ -60,7 +60,7 @@ export const OrganizationModal = ({}: Props): JSX.Element => {
               textColor="white"
               onPress={createOrganization}
             >
-              Create Organization
+              Create An Organization
             </Button>
             <Button
               buttonColor="#C0D1FE"

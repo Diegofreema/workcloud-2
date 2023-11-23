@@ -15,7 +15,6 @@ import Toast from 'react-native-toast-message';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { EventRegister } from 'react-native-event-listeners';
 import { useDarkMode } from '../hooks/useDarkMode';
-import { StatusBar } from 'expo-status-bar';
 
 import { Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -88,7 +87,10 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={darkMode ? DarkTheme : DefaultTheme}>
-      <StatusBar style={'auto'} />
+      <StatusBars
+        barStyle={darkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={darkMode ? 'black' : 'white'}
+      />
       <SafeAreaView
         style={{
           flex: 1,
@@ -99,16 +101,13 @@ function RootLayoutNav() {
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="connections" options={{ headerShown: false }} />
           <Stack.Screen name="board" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="organization/[organizationId]"
-            options={{ headerShown: false }}
-          />
+
           <Stack.Screen
             name="create-workspace"
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="(organization)/organizations"
+            name="(organization)"
             options={{ headerShown: false }}
           />
         </Stack>

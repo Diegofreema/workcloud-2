@@ -16,7 +16,10 @@ export const WorkCloudHeader = ({}: Props): JSX.Element => {
       <View style={[{ flexDirection: 'row', justifyContent: 'space-between' }]}>
         <Text
           variant="titleLarge"
-          style={{ fontWeight: 'bold', color: darkMode ? 'white' : 'black' }}
+          style={{
+            fontWeight: 'bold',
+            color: darkMode ? colors.white : colors.black,
+          }}
         >
           {' '}
           Organizations
@@ -28,7 +31,7 @@ export const WorkCloudHeader = ({}: Props): JSX.Element => {
           <FontAwesome
             name="search"
             size={20}
-            color={darkMode ? 'white' : 'black'}
+            color={darkMode ? colors.white : colors.black}
           />
         </Pressable>
       </View>
@@ -48,7 +51,7 @@ export const WorkCloudHeader = ({}: Props): JSX.Element => {
           <FontAwesome
             name="briefcase"
             size={20}
-            color={darkMode ? 'white' : colors.textGray}
+            color={darkMode ? colors.white : colors.black}
           />
           <FontAwesome
             name="plus-circle"
@@ -57,7 +60,14 @@ export const WorkCloudHeader = ({}: Props): JSX.Element => {
             style={{ position: 'absolute', bottom: 5, right: 3 }}
           />
         </View>
-        <Text style={{ maxWidth: 100 }}>Create an organization</Text>
+        <Text
+          style={{
+            maxWidth: 100,
+            color: darkMode ? colors.white : colors.black,
+          }}
+        >
+          Create an organization
+        </Text>
       </Pressable>
     </>
   );

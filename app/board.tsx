@@ -34,7 +34,7 @@ const signup = (props: Props) => {
 
   const [show, setShow] = useState(false);
   const router = useRouter();
-  // useFocusEffect(() => {
+  // useEffect(() => {
   //   if (isLoaded && !isSignedIn) {
   //     Toast.show({
   //       type: 'error',
@@ -43,7 +43,7 @@ const signup = (props: Props) => {
   //     });
   //     router.replace('/login');
   //   }
-  // });
+  // }, []);
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
@@ -114,12 +114,13 @@ const signup = (props: Props) => {
         Toast.show({
           type: 'success',
           text1: 'Welcome to Workcloud',
-          text2: `${firstName.toUpperCase()} your  profile was created`,
+          text2: `${firstName
+            .charAt(0)
+            .toUpperCase()} your  profile was created`,
         });
 
         router.push('/(tabs)');
       }
-      console.log(values);
 
       if (error) {
         Toast.show({
@@ -130,18 +131,17 @@ const signup = (props: Props) => {
       }
     },
   });
-  console.log(errors);
 
   const { email, firstName, gender, lastName } = values;
-  console.log(date);
 
   return (
     <ScrollView
       style={{ flex: 1 }}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={defaultStyle}
+      contentContainerStyle={{ ...defaultStyle, paddingTop: 20 }}
     >
       <AuthHeader />
+      <View style={{ marginBottom: 20 }} />
       <AuthTitle>Complete your profile</AuthTitle>
       <Text style={{ marginTop: 20, color: colors.textGray }}>
         Enter your details below
@@ -200,14 +200,14 @@ const signup = (props: Props) => {
               Date of birth
             </Text>
             <Pressable onPress={showMode} style={styles2.border}>
-              <Text>
+              <Text style={{ color: colors.black }}>
                 {' '}
                 {`${dateFormat(date, 'dd/mm/yyyy') || ' Date Of Birth'}`}{' '}
               </Text>
             </Pressable>
             {error && (
               <Text style={{ color: 'red', fontWeight: 'bold' }}>
-                {'Please select date of birth'}
+                {'Please you should be at least 18 years old'}
               </Text>
             )}
           </>
@@ -255,6 +255,7 @@ const signup = (props: Props) => {
             mode="contained"
             onPress={() => handleSubmit()}
             buttonColor={colors.buttonBlue}
+            textColor="white"
           >
             Submit
           </Button>

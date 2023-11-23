@@ -78,16 +78,36 @@ const CreateWorkSpace = (props: Props) => {
 
     setImage(finalImageUrl);
   };
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      Toast.show({
+        type: 'error',
+        text1: 'Unauthorized',
+        text2: 'Please login to continue',
+      });
+      router.push('/login');
+      return;
+    }
+  }, []);
 
-  if (isLoaded && !isSignedIn) {
-    Toast.show({
-      type: 'error',
-      text1: 'Unauthorized',
-      text2: 'Please login to continue',
-    });
-    router.push('/login');
-    return;
-  }
+  useEffect(() => {
+    const checkIfBoarded = async () => {
+      const { data, error } = await supabase
+        .from('profile')
+        .select('user_id')
+        .eq('user_id', user?.id);
+
+      if (isLoaded && isSignedIn && !data?.length) {
+        router.push('/board');
+        return Toast.show({
+          type: 'error',
+          text1: 'Unauthorized',
+          text2: 'Please complete your profile to continue',
+        });
+      }
+    };
+    checkIfBoarded();
+  }, []);
 
   const onSelectImage = async () => {
     const options: ImagePicker.ImagePickerOptions = {
@@ -100,7 +120,6 @@ const CreateWorkSpace = (props: Props) => {
     // Save image if not cancelled
     if (!result.canceled) {
       const img = result.assets[0];
-      console.log('91', img);
 
       const base64 = await FileSystem.readAsStringAsync(img.uri, {
         encoding: 'base64',
@@ -122,7 +141,6 @@ const CreateWorkSpace = (props: Props) => {
       }
     }
   };
-  console.log('113', image.split('/').slice(0, -1).join('/'));
 
   const onRemove = async () => {
     const { data, error } = await supabase.storage
@@ -152,12 +170,6 @@ const CreateWorkSpace = (props: Props) => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      if (isLoaded && !user?.id)
-        return Toast.show({
-          type: 'error',
-          text1: 'Unauthorized',
-          text2: 'Please login to continue',
-        });
       const {
         email,
         category,
@@ -233,15 +245,20 @@ const CreateWorkSpace = (props: Props) => {
     <ScrollView
       style={[defaultStyle, { flex: 1 }]}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{
-        paddingBottom: 30,
-      }}
+      contentContainerStyle={{ paddingVertical: 20 }}
     >
       <AuthHeader />
+      <View style={{ marginBottom: 20 }} />
+
       <AuthTitle>Create an organization</AuthTitle>
       <Subtitle>Enter your organization details</Subtitle>
       <View style={{ marginTop: 20, flex: 1 }}>
         <View style={{ flex: 0.6, gap: 10 }}>
+          <Text
+            style={{ color: darkMode ? 'white' : 'black', fontWeight: 'bold' }}
+          >
+            Organization image
+          </Text>
           <View style={{ alignItems: 'center', justifyContent: 'center' }}>
             {image.includes('png') || image.includes('jpg') ? (
               <View
@@ -267,7 +284,11 @@ const CreateWorkSpace = (props: Props) => {
                   }}
                   onPress={onRemove}
                 >
-                  <Ionicons name="trash-outline" size={20} color={'#fff'} />
+                  <Ionicons
+                    name="trash-outline"
+                    size={20}
+                    color={darkMode ? 'black' : 'white'}
+                  />
                 </TouchableOpacity>
               </View>
             ) : (
@@ -280,7 +301,6 @@ const CreateWorkSpace = (props: Props) => {
                   backgroundColor: 'gray',
                 }}
               >
-                {/* <Image /> */}
                 <TouchableOpacity
                   style={{
                     position: 'absolute',
@@ -489,6 +509,7 @@ const CreateWorkSpace = (props: Props) => {
             mode="contained"
             onPress={() => handleSubmit()}
             buttonColor={colors.buttonBlue}
+            textColor={colors.white}
           >
             {isSubmitting ? 'Creating...' : 'Create'}
           </Button>

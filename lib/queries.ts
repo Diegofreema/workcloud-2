@@ -26,7 +26,7 @@ export const usePersonalOrgs = () => {
     const { data, error } = await supabase
       .from('workspace')
       .select()
-      .eq('owner_id', userId);
+      .eq('owner_id', 'userId');
 
     return {
       orgs: data as Organization[],
@@ -48,6 +48,24 @@ export const useAssignedOrgs = () => {
 
     return {
       orgs: data,
+      error,
+    };
+  };
+  return useQuery({
+    queryKey: ['organizations'],
+    queryFn: async () => getOrgs(),
+  });
+};
+
+export const useGetSingleOrg = (id: any) => {
+  const getOrgs = async () => {
+    const { data, error } = await supabase
+      .from('workspace')
+      .select()
+      .eq('id', id);
+
+    return {
+      orgs: data as Organization[],
       error,
     };
   };

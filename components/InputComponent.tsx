@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { useDarkMode } from '../hooks/useDarkMode';
+import { colors } from '../constants/Colors';
 
 type Props = {
   placeholder: string;
@@ -48,8 +49,10 @@ export const InputComponent = ({
       )}
       <TextInput
         numberOfLines={numberOfLines}
+        placeholderTextColor={'black'}
         style={{
           backgroundColor: '#E9E9E9',
+          color: colors.black,
         }}
         right={
           password && (

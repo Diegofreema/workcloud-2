@@ -10,12 +10,11 @@ type Props = {
 };
 
 export const WorkspaceItem = ({ item }: Props): JSX.Element => {
-  console.log(item.image_url);
   const { darkMode } = useDarkMode();
   const router = useRouter();
   return (
     <Pressable
-      onPress={() => router.push(`/organization/${item.id}`)}
+      onPress={() => router.push(`/(organization)/${item.id}`)}
       style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}
     >
       <Image

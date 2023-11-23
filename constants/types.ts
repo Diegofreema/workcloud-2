@@ -10,7 +10,7 @@ export type connections =
 export type Organization = {
   organization_name: string;
   id: number;
-  website_url: string;
+  website: string;
   location: string;
   category: string;
   work_days: string;
