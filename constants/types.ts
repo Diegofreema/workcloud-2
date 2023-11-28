@@ -20,7 +20,18 @@ export type Organization = {
   active: boolean;
   leisure: boolean;
   createAt: string;
-  ownerId: string;
+  owner_id: string;
   opening_time: string;
   closing_time: string;
+};
+
+export type Profile = {
+  id: number;
+  name: string;
+  avatarUrl: string;
+  date_of_birth: string;
+  email: string;
+  phone: string;
+  gender: string;
+  user_id: string;
 };

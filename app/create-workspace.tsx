@@ -36,6 +36,7 @@ import ImageItem from '../components/ImageItem';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
+import { format } from 'date-fns';
 import { useRouter } from 'expo-router';
 import { useQueryClient } from '@tanstack/react-query';
 const validationSchema = yup.object().shape({
@@ -67,6 +68,8 @@ const CreateWorkSpace = (props: Props) => {
   const router = useRouter();
   const [file, setFile] = useState<FileObject[]>([]);
   const queryClient = useQueryClient();
+  console.log(image);
+
   useEffect(() => {
     loadImage(imagePath);
   }, [imagePath, imageName, imageType]);
@@ -96,8 +99,9 @@ const CreateWorkSpace = (props: Props) => {
         .from('profile')
         .select('user_id')
         .eq('user_id', user?.id);
+      console.log(data);
 
-      if (isLoaded && isSignedIn && !data?.length) {
+      if (isSignedIn && !data?.length) {
         router.push('/board');
         return Toast.show({
           type: 'error',
@@ -180,7 +184,12 @@ const CreateWorkSpace = (props: Props) => {
         description,
         website_url,
       } = values;
-
+      if (!image.includes('png') && !image.includes('jpg')) {
+        return Toast.show({
+          type: 'error',
+          text1: 'Please upload an image',
+        });
+      }
       const { error } = await supabase.from('workspace').insert({
         organization_name: organization_name,
         category,
@@ -206,6 +215,8 @@ const CreateWorkSpace = (props: Props) => {
         return;
       }
       if (error) {
+        console.log(error);
+
         return Toast.show({
           type: 'error',
           text1: 'Error',
@@ -214,6 +225,8 @@ const CreateWorkSpace = (props: Props) => {
       }
     },
   });
+  console.log(dateFormat(endTime, 'hh-mm TT'));
+  console.log(format(endTime, 'hh:mm aaa'));
 
   const onChange = (event: any, selectedDate: any, type: string) => {
     const currentDate = selectedDate;

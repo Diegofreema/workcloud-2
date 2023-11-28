@@ -24,15 +24,8 @@ const SignInWithOAuth = () => {
 
       if (createdSessionId) {
         setActive!({ session: createdSessionId });
-        const { data } = await supabase
-          .from('profile')
-          .select('user_id')
-          .eq('user_id', userId);
-        if (!data?.length) {
-          router.push('/(tabs)');
-        } else {
-          router.push('/board');
-        }
+
+        router.back();
       }
     } catch (err) {
       console.error('OAuth error', err);

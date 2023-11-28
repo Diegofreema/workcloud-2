@@ -1,9 +1,15 @@
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Image as RNImage,
+} from 'react-native';
 import React from 'react';
-import { Link, useLocalSearchParams, useRouter } from 'expo-router';
-import { useGetSingleOrg } from '../../lib/queries';
-import { WorkspaceItem } from '../../components/WorkspaceItem';
-import { FontAwesome } from '@expo/vector-icons';
+
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useGetSingleOrg, useProfile } from '../../lib/queries';
 import { useDarkMode } from '../../hooks/useDarkMode';
 import { AuthHeader } from '../../components/AuthHeader';
 import { Image } from 'expo-image';
@@ -12,6 +18,10 @@ import { colors } from '../../constants/Colors';
 import dateFormat from 'dateformat';
 import { EvilIcons } from '@expo/vector-icons';
 import * as Linking from 'expo-linking';
+import { useAuth } from '@clerk/clerk-expo';
+import MyLoader from '../../components/MyLoader';
+import { WorkspaceDetails } from '../../components/WorkspaceDetails';
+import { format, sub } from 'date-fns';
 
 type Props = {};
 type SubProps = {
@@ -19,6 +29,42 @@ type SubProps = {
   text: any;
   website?: boolean;
 };
+
+const images = [
+  {
+    name: 'Workspace',
+    uri: '../../assets/images/workspace.png',
+  },
+  {
+    name: 'Staffs',
+    uri: '../../assets/images/staff.png',
+  },
+  {
+    name: 'Messages',
+    uri: '../../assets/images/message.png',
+  },
+  {
+    name: 'Posts',
+    uri: '../../assets/images/post.png',
+  },
+  {
+    name: 'Sales',
+    uri: '../../assets/images/sales.png',
+  },
+  {
+    name: 'Featured WKS',
+    uri: '../../assets/images/featured.png',
+  },
+  {
+    name: 'Services point',
+    uri: '../../assets/images/service.png',
+  },
+  {
+    name: 'Delete WKS',
+    uri: '../../assets/images/delete.png',
+  },
+];
+
 const OrganizationItems = ({ name, text, website }: SubProps) => {
   const { darkMode } = useDarkMode();
 
@@ -54,11 +100,22 @@ const OrganizationDetails = (props: Props) => {
   const { organizationId } = useLocalSearchParams();
   const { darkMode } = useDarkMode();
   const router = useRouter();
+  const { userId } = useAuth();
   const { data, isFetching, isLoading, isPending, error } =
     useGetSingleOrg(organizationId);
-
-  if (isLoading || isFetching || isPending) {
-    return <Text>Loading...</Text>;
+  const {
+    data: profile,
+    isFetching: profileIsFetching,
+    isLoading: profileIsLoading,
+  } = useProfile(data?.orgs[0]?.owner_id);
+  if (
+    isLoading ||
+    isFetching ||
+    isPending ||
+    profileIsFetching ||
+    profileIsLoading
+  ) {
+    return <MyLoader />;
   }
 
   if (error) {
@@ -68,7 +125,10 @@ const OrganizationDetails = (props: Props) => {
   console.log(data?.orgs[0]);
 
   const organization = data.orgs[0];
-
+  const formattedOpeningTime = new Date(organization?.opening_time);
+  const formattedClosingTime = new Date(organization?.closing_time);
+  const newCloseTime = sub(formattedClosingTime, { minutes: 15 });
+  const newOpeningTime = sub(formattedOpeningTime, { minutes: 15 });
   return (
     <>
       <AuthHeader
@@ -88,25 +148,41 @@ const OrganizationDetails = (props: Props) => {
             <Image
               style={{ width: 70, height: 70, borderRadius: 50 }}
               contentFit="cover"
-              source={{ uri: organization.image_url }}
+              source={{ uri: organization?.image_url }}
             />
             <View>
-              <Text style={{ fontWeight: 'bold', fontSize: 18 }}>
-                {organization.organization_name}
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: 18,
+                  color: darkMode ? colors.white : colors.black,
+                }}
+              >
+                {organization?.organization_name}
               </Text>
-              <Text>{}</Text>
+              <Text
+                style={{
+                  fontWeight: '400',
+                  fontSize: 13,
+                  color: darkMode ? colors.white : colors.black,
+                }}
+              >
+                {profile?.profile[0]?.name} | Admin
+              </Text>
             </View>
           </View>
-          <Button
-            onPress={() =>
-              router.push(`/(organization)/edit/${organization.id})`)
-            }
-            textColor="white"
-            buttonColor={colors.buttonBlue}
-            style={{ borderRadius: 5 }}
-          >
-            Edit organization
-          </Button>
+          {userId === organization?.owner_id && (
+            <Button
+              onPress={() =>
+                router.push(`/(organization)/edit/${organization?.id})`)
+              }
+              textColor="white"
+              buttonColor={colors.buttonBlue}
+              style={{ borderRadius: 5 }}
+            >
+              Edit
+            </Button>
+          )}
         </View>
         <View
           style={{
@@ -123,7 +199,7 @@ const OrganizationDetails = (props: Props) => {
               color: darkMode ? colors.white : colors.black,
             }}
           >
-            {organization.description}
+            {organization?.description}
           </Text>
           <View
             style={{
@@ -141,7 +217,7 @@ const OrganizationDetails = (props: Props) => {
                 textTransform: 'uppercase',
               }}
             >
-              {organization.work_days}
+              {organization?.work_days}
             </Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View
@@ -152,7 +228,7 @@ const OrganizationDetails = (props: Props) => {
                 }}
               >
                 <Text style={{ color: '#00C041' }}>
-                  {dateFormat(organization.opening_time, 'hh:mm TT')}
+                  {format(newOpeningTime, 'hh:mm aaa')}
                 </Text>
               </View>
               <Text> — </Text>
@@ -165,7 +241,7 @@ const OrganizationDetails = (props: Props) => {
                 }}
               >
                 <Text style={{ color: '#D61B0C' }}>
-                  {dateFormat(organization.closing_time, 'hh:mm TT')}
+                  {format(newCloseTime, 'hh:mm aaa')}
                 </Text>
               </View>
             </View>
@@ -180,6 +256,85 @@ const OrganizationDetails = (props: Props) => {
           <OrganizationItems name="envelope" text={organization.email} />
           <OrganizationItems name="location" text={organization.location} />
           <OrganizationItems name="link" text={organization.website} website />
+          <Text
+            style={{
+              fontWeight: 'bold',
+              color: darkMode ? colors.white : colors.black,
+            }}
+          >
+            Members 0
+          </Text>
+        </View>
+        <View>
+          <View
+            style={{
+              marginVertical: 20,
+              borderWidth: StyleSheet.hairlineWidth,
+              borderColor: darkMode ? colors.white : colors.gray,
+            }}
+          />
+        </View>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 15,
+          }}
+        >
+          <WorkspaceDetails
+            darkMode={darkMode}
+            uri={require('../../assets/images/workspace.png')}
+            name="Workspaces"
+          />
+
+          <WorkspaceDetails
+            darkMode={darkMode}
+            uri={require('../../assets/images/staff.png')}
+            name="Staffs"
+          />
+          <WorkspaceDetails
+            darkMode={darkMode}
+            uri={require('../../assets/images/message.png')}
+            name="Messages"
+          />
+          <WorkspaceDetails
+            darkMode={darkMode}
+            uri={require('../../assets/images/post.png')}
+            name="Posts"
+          />
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <WorkspaceDetails
+            darkMode={darkMode}
+            uri={require('../../assets/images/sales.png')}
+            name="Sales"
+          />
+
+          <WorkspaceDetails
+            darkMode={darkMode}
+            uri={require('../../assets/images/featured.png')}
+            name="Featured WKS"
+          />
+          <WorkspaceDetails
+            darkMode={darkMode}
+            uri={require('../../assets/images/service.png')}
+            name="Service point"
+          />
+          <WorkspaceDetails
+            darkMode={darkMode}
+            uri={require('../../assets/images/delete.png')}
+            name="Delete WKS"
+          />
         </View>
       </ScrollView>
     </>
@@ -188,4 +343,9 @@ const OrganizationDetails = (props: Props) => {
 
 export default OrganizationDetails;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  image: {
+    width: 50,
+    height: 50,
+  },
+});

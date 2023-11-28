@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from './supabase';
-import { Organization, connections } from '../constants/types';
+import { Organization, Profile, connections } from '../constants/types';
 import { useAuth } from '@clerk/clerk-expo';
 
 export const useFollowers = () => {
@@ -26,7 +26,7 @@ export const usePersonalOrgs = () => {
     const { data, error } = await supabase
       .from('workspace')
       .select()
-      .eq('owner_id', 'userId');
+      .eq('owner_id', userId);
 
     return {
       orgs: data as Organization[],
@@ -72,5 +72,22 @@ export const useGetSingleOrg = (id: any) => {
   return useQuery({
     queryKey: ['organizations'],
     queryFn: async () => getOrgs(),
+  });
+};
+export const useProfile = (id: any) => {
+  const getProfile = async () => {
+    const { data, error } = await supabase
+      .from('profile')
+      .select()
+      .eq('user_id', id);
+
+    return {
+      profile: data as Profile[],
+      error,
+    };
+  };
+  return useQuery({
+    queryKey: ['profile'],
+    queryFn: async () => getProfile(),
   });
 };

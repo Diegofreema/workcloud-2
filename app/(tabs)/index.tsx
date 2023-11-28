@@ -23,7 +23,7 @@ export default function TabOneScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      if (orgs?.orgs.length === 0) {
+      if (loggedIn && orgs?.orgs?.length === 0) {
         onOpen();
       }
     }, [])
