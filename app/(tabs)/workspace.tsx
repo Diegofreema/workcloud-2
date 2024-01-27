@@ -14,7 +14,7 @@ const workspace = (props: Props) => {
   const { darkMode } = useDarkMode();
   const { data, isFetching, isLoading, isPending, refetch, error } =
     usePersonalOrgs();
-  const haveOrganization = data?.orgs.length === 0;
+  const haveOrganization = data?.orgs?.length === 0;
   console.log(haveOrganization);
   console.log(data?.orgs.length);
 

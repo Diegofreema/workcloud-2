@@ -122,8 +122,6 @@ const OrganizationDetails = (props: Props) => {
     return <Text>Something went wrong</Text>;
   }
 
-  console.log(data?.orgs[0]);
-
   const organization = data.orgs[0];
   const formattedOpeningTime = new Date(organization?.opening_time);
   const formattedClosingTime = new Date(organization?.closing_time);

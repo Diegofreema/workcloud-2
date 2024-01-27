@@ -15,9 +15,10 @@ import Toast from 'react-native-toast-message';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { EventRegister } from 'react-native-event-listeners';
 import { useDarkMode } from '../hooks/useDarkMode';
-
+import { config } from '@gluestack-ui/config';
 import { Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { GluestackUIProvider } from '@gluestack-ui/themed';
 const ClerkKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 const tokenCache = {
   async getToken(key: string) {
@@ -52,6 +53,9 @@ export default function RootLayout() {
   const queryClient = new QueryClient();
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    PoppinsLight: require('../assets/fonts/Poppins-Light.ttf'),
+    PoppinsBold: require('../assets/fonts/Poppins-Bold.ttf'),
+    PoppinsMedium: require('../assets/fonts/Poppins-Medium.ttf'),
     ...FontAwesome.font,
   });
 
@@ -72,12 +76,14 @@ export default function RootLayout() {
 
   return (
     <ClerkProvider publishableKey={ClerkKey} tokenCache={tokenCache}>
-      <QueryClientProvider client={queryClient}>
-        <PaperProvider>
-          <RootLayoutNav />
-          <Toast />
-        </PaperProvider>
-      </QueryClientProvider>
+      <GluestackUIProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <PaperProvider>
+            <RootLayoutNav />
+            <Toast />
+          </PaperProvider>
+        </QueryClientProvider>
+      </GluestackUIProvider>
     </ClerkProvider>
   );
 }

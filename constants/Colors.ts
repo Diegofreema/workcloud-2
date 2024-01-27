@@ -25,4 +25,6 @@ export const colors = {
   lightBlue: '#1A91FF',
   white: '#fff',
   black: '#000',
+  phone1: '#6A6A6A',
+  dialPad: '#0047FF',
 };

@@ -68,7 +68,6 @@ const CreateWorkSpace = (props: Props) => {
   const router = useRouter();
   const [file, setFile] = useState<FileObject[]>([]);
   const queryClient = useQueryClient();
-  console.log(image);
 
   useEffect(() => {
     loadImage(imagePath);
@@ -99,7 +98,6 @@ const CreateWorkSpace = (props: Props) => {
         .from('profile')
         .select('user_id')
         .eq('user_id', user?.id);
-      console.log(data);
 
       if (isSignedIn && !data?.length) {
         router.push('/board');
@@ -225,8 +223,6 @@ const CreateWorkSpace = (props: Props) => {
       }
     },
   });
-  console.log(dateFormat(endTime, 'hh-mm TT'));
-  console.log(format(endTime, 'hh:mm aaa'));
 
   const onChange = (event: any, selectedDate: any, type: string) => {
     const currentDate = selectedDate;

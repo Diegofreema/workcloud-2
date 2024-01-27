@@ -1,16 +1,18 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { useDarkMode } from '../../hooks/useDarkMode';
 import { useRouter } from 'expo-router';
+import { TextComponents } from '../../components/TextComponents';
+import { defaultStyle } from '../../constants/index';
 
 type Props = {};
-
+const messageArray = Array.from({ length: 10 }, (_, i) => i + 1);
 const messages = (props: Props) => {
   const { darkMode } = useDarkMode();
   const router = useRouter();
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text
+    <View style={{ flex: 1, ...defaultStyle }}>
+      {/* <Text
         style={{
           fontSize: 20,
           fontWeight: 'bold',
@@ -18,7 +20,14 @@ const messages = (props: Props) => {
         }}
       >
         No messages yet
-      </Text>
+      </Text> */}
+
+      <FlatList
+        data={messageArray}
+        renderItem={({ item }) => <TextComponents />}
+        keyExtractor={(item) => item.toString()}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
   );
 };
