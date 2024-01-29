@@ -27,4 +27,8 @@ export const colors = {
   black: '#000',
   phone1: '#6A6A6A',
   dialPad: '#0047FF',
+  openTextColor: '#CCF2D9',
+  openBackgroundColor: '#00C041',
+  closeTextColor: '#D61B0C',
+  closeBackgroundColor: '#FFD9D9',
 };

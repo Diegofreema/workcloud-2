@@ -5,6 +5,7 @@ import { Platform, Pressable, StatusBar, useColorScheme } from 'react-native';
 import Colors, { colors } from '../../constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from 'react-native-paper';
+import { fontFamily } from '../../constants';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -60,8 +61,8 @@ export default function TabLayout() {
               <Text
                 style={{
                   color: focused ? colors.buttonBlue : colors.gray,
-                  fontWeight: 'bold',
-                  fontSize: 11,
+                  fontFamily: fontFamily.Bold,
+                  fontSize: 7,
                 }}
               >
                 Home
@@ -84,8 +85,8 @@ export default function TabLayout() {
               <Text
                 style={{
                   color: focused ? colors.buttonBlue : colors.gray,
-                  fontWeight: 'bold',
-                  fontSize: 11,
+                  fontFamily: fontFamily.Bold,
+                  fontSize: 7,
                 }}
               >
                 Messages
@@ -108,8 +109,8 @@ export default function TabLayout() {
               <Text
                 style={{
                   color: focused ? colors.buttonBlue : colors.gray,
-                  fontWeight: 'bold',
-                  fontSize: 11,
+                  fontFamily: fontFamily.Bold,
+                  fontSize: 7,
                 }}
               >
                 Organizations
@@ -132,8 +133,8 @@ export default function TabLayout() {
               <Text
                 style={{
                   color: focused ? colors.buttonBlue : colors.gray,
-                  fontWeight: 'bold',
-                  fontSize: 11,
+                  fontFamily: fontFamily.Bold,
+                  fontSize: 7,
                 }}
               >
                 Call logs
@@ -156,8 +157,8 @@ export default function TabLayout() {
               <Text
                 style={{
                   color: focused ? colors.buttonBlue : colors.gray,
-                  fontWeight: 'bold',
-                  fontSize: 11,
+                  fontFamily: fontFamily.Bold,
+                  fontSize: 7,
                 }}
               >
                 Profile

@@ -4,15 +4,17 @@ import { Image } from 'expo-image';
 import { Link, useRouter } from 'expo-router';
 import { Text } from 'react-native-paper';
 import { useDarkMode } from '../hooks/useDarkMode';
-type Props = {};
+type Props = {
+  id: string;
+};
 
-export const ProfileHeader = ({}: Props): JSX.Element | undefined => {
+export const ProfileHeader = ({ id }: Props): JSX.Element | undefined => {
   const { user, isLoaded } = useUser();
   const { darkMode } = useDarkMode();
   const router = useRouter();
   if (isLoaded && !user?.id) return;
   return (
-    <Link asChild href={'/account'}>
+    <Link asChild href={`/(myProfile)/${id}`}>
       <Pressable
         style={{
           marginTop: 10,
@@ -30,14 +32,19 @@ export const ProfileHeader = ({}: Props): JSX.Element | undefined => {
           <Text
             variant="titleSmall"
             style={{
-              fontWeight: 'bold',
+              fontFamily: 'PoppinsBold',
               fontSize: 17,
               color: darkMode ? 'white' : 'black',
             }}
           >
             Hi {user?.firstName}
           </Text>
-          <Text style={{ color: darkMode ? 'white' : 'black' }}>
+          <Text
+            style={{
+              color: '#666666',
+              fontFamily: 'PoppinsLight',
+            }}
+          >
             Good to have you here
           </Text>
         </View>

@@ -32,3 +32,11 @@ export const days = [
     value: 'saturday',
   },
 ];
+
+export const fontFamily = {
+  Bold: 'PoppinsBold',
+  Light: 'PoppinsLight',
+  Medium: 'PoppinsMedium',
+  BoldItalic: 'PoppinsBoldItalic',
+  LightItalic: 'PoppinsLightItalic',
+};

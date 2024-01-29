@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, View } from 'react-native';
 
 import { useFocusEffect, useRouter } from 'expo-router';
-import { defaultStyle } from '../../constants';
+import { defaultStyle, fontFamily } from '../../constants';
 import { Header } from '../../components/Header';
 import { useAuth } from '@clerk/clerk-expo';
 import { ProfileHeader } from '../../components/ProfileHeader';
@@ -34,7 +34,7 @@ export default function TabOneScreen() {
     <View style={[defaultStyle, styles.container]}>
       <OrganizationModal />
       <Header />
-      {loggedIn && <ProfileHeader />}
+      {loggedIn && <ProfileHeader id={userId} />}
       {loggedIn ? (
         <View style={styles.connections}>
           <View
@@ -45,13 +45,23 @@ export default function TabOneScreen() {
               borderRadius: 10,
             }}
           >
-            <Text style={{ color: darkMode ? 'white' : 'black' }}>
+            <Text
+              style={{
+                color: darkMode ? 'white' : 'black',
+                fontFamily: fontFamily.Medium,
+                fontSize: 10,
+              }}
+            >
               Recent connections
             </Text>
           </View>
           <Text
             onPress={() => router.push('/connections')}
-            style={{ color: colors.buttonBlue, fontWeight: 'bold' }}
+            style={{
+              color: colors.buttonBlue,
+              fontFamily: fontFamily.Bold,
+              fontSize: 9,
+            }}
           >
             See all connections
           </Text>
@@ -81,7 +91,7 @@ export default function TabOneScreen() {
               <Text
                 variant="titleLarge"
                 style={{
-                  fontWeight: 'bold',
+                  fontFamily: fontFamily.Bold,
                   marginTop: 30,
                   color: darkMode ? 'white' : 'black',
                 }}

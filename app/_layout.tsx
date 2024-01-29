@@ -56,6 +56,8 @@ export default function RootLayout() {
     PoppinsLight: require('../assets/fonts/Poppins-Light.ttf'),
     PoppinsBold: require('../assets/fonts/Poppins-Bold.ttf'),
     PoppinsMedium: require('../assets/fonts/Poppins-Medium.ttf'),
+    PoppinsBoldItalic: require('../assets/fonts/Poppins-BoldItalic.ttf'),
+    PoppinsLightItalic: require('../assets/fonts/Poppins-BoldItalic.ttf'),
     ...FontAwesome.font,
   });
 
@@ -114,6 +116,10 @@ function RootLayoutNav() {
           />
           <Stack.Screen
             name="(organization)"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(myProfile)/[id]"
             options={{ headerShown: false }}
           />
         </Stack>

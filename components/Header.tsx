@@ -12,10 +12,9 @@ export const Header = ({}: Props): JSX.Element => {
     <View style={styles.container}>
       <Text
         style={{
-          fontWeight: 'bold',
+          fontFamily: 'PoppinsBoldItalic',
           color: colors.buttonBlue,
-          fontSize: 20,
-          fontStyle: 'italic',
+          fontSize: 15,
         }}
       >
         Workcloud
