@@ -31,4 +31,6 @@ export const colors = {
   openBackgroundColor: '#00C041',
   closeTextColor: '#D61B0C',
   closeBackgroundColor: '#FFD9D9',
+  grayText: '#666666',
+  nine: '#999999',
 };

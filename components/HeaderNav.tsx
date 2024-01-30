@@ -35,6 +35,8 @@ export const HeaderNav = ({ title, RightComponent }: Props): JSX.Element => {
           style={{
             color: darkMode ? 'white' : 'black',
             fontFamily: 'PoppinsBold',
+
+            fontSize: 15,
           }}
         >
           {title}

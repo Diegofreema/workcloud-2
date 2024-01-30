@@ -2,6 +2,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { useDarkMode } from '../hooks/useDarkMode';
 import { colors } from '../constants/Colors';
+import { fontFamily } from '../constants';
 
 type Props = {
   placeholder: string;
@@ -40,7 +41,8 @@ export const InputComponent = ({
         <Text
           style={{
             marginBottom: 5,
-            fontWeight: 'bold',
+            fontFamily: fontFamily.Medium,
+            fontSize: 11,
             color: darkMode ? 'white' : 'black',
           }}
         >
@@ -52,7 +54,11 @@ export const InputComponent = ({
         placeholderTextColor={'black'}
         style={{
           backgroundColor: '#E9E9E9',
-          color: colors.black,
+        }}
+        contentStyle={{
+          color: 'black',
+          fontFamily: fontFamily.Medium,
+          fontSize: 13,
         }}
         right={
           password && (

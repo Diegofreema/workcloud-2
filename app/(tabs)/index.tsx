@@ -12,6 +12,7 @@ import { useContext, useCallback, useEffect, useLayoutEffect } from 'react';
 import { useDarkMode } from '../../hooks/useDarkMode';
 import { useOrganizationModal } from '../../hooks/useOrganizationModal';
 import { OrganizationModal } from '../../components/OrganizationModal';
+import { HeadingText } from '../../components/Ui/HeadingText';
 
 export default function TabOneScreen() {
   const router = useRouter();
@@ -36,35 +37,8 @@ export default function TabOneScreen() {
       <Header />
       {loggedIn && <ProfileHeader id={userId} />}
       {loggedIn ? (
-        <View style={styles.connections}>
-          <View
-            style={{
-              backgroundColor: darkMode ? colors.black : colors.gray,
-              padding: 2,
-              paddingHorizontal: 5,
-              borderRadius: 10,
-            }}
-          >
-            <Text
-              style={{
-                color: darkMode ? 'white' : 'black',
-                fontFamily: fontFamily.Medium,
-                fontSize: 10,
-              }}
-            >
-              Recent connections
-            </Text>
-          </View>
-          <Text
-            onPress={() => router.push('/connections')}
-            style={{
-              color: colors.buttonBlue,
-              fontFamily: fontFamily.Bold,
-              fontSize: 9,
-            }}
-          >
-            See all connections
-          </Text>
+        <View style={{ marginTop: 10 }}>
+          <HeadingText link="/connections" />
         </View>
       ) : (
         <Text style={{ color: darkMode ? 'white' : 'black' }}>
@@ -107,13 +81,6 @@ export default function TabOneScreen() {
 }
 
 const styles = StyleSheet.create({
-  connections: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-
-    alignItems: 'center',
-    marginTop: 10,
-  },
   container: {
     flex: 1,
   },
