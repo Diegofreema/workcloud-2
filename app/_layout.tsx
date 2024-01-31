@@ -126,6 +126,10 @@ function RootLayoutNav() {
             name="edit-profile/[userId]"
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name="calls/[records]"
+            options={{ headerShown: false }}
+          />
           <Stack.Screen name="settings" options={{ headerShown: false }} />
         </Stack>
       </SafeAreaView>

@@ -6,9 +6,10 @@ import { HeadingText } from '../Ui/HeadingText';
 import { router, useLocalSearchParams } from 'expo-router';
 import { MyText } from '../Ui/MyText';
 import { colors } from '../../constants/Colors';
+import { VideoPreview } from '../Ui/VideoPreview';
 
 type Props = {};
-const call = {
+export const call = {
   time: '20 min ago',
   from: 'Called on fidelity WS',
   name: 'Roland Gracias',
@@ -36,19 +37,7 @@ export const BottomCard = ({}: Props): JSX.Element => {
         style={{ flexWrap: 'wrap', marginTop: 10 }}
       >
         {fourItems.map((item, index) => (
-          <VStack key={index} justifyContent="center" alignItems="center">
-            <Image
-              source={require('../../assets/images/video.png')}
-              style={styles.image}
-            />
-            <MyText poppins="Bold">{call.name}</MyText>
-            <MyText fontSize={7} poppins="Medium">
-              {call.from}
-            </MyText>
-            <MyText style={{ color: colors.nine }} poppins="Light">
-              {call.time}
-            </MyText>
-          </VStack>
+          <VideoPreview key={index} {...call} />
         ))}
       </HStack>
 
