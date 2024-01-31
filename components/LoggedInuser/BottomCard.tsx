@@ -1,9 +1,9 @@
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView, Pressable } from 'react-native';
 import { HStack, VStack } from '@gluestack-ui/themed';
 import { Image } from 'expo-image';
 
 import { HeadingText } from '../Ui/HeadingText';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { MyText } from '../Ui/MyText';
 import { colors } from '../../constants/Colors';
 
@@ -17,6 +17,11 @@ const call = {
 const fourItems = [1, 2, 3];
 export const BottomCard = ({}: Props): JSX.Element => {
   const { records } = useLocalSearchParams();
+  const handleNavigate = () => {
+    router.push('/settings');
+  };
+
+  const logout = () => {};
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <HeadingText
@@ -48,29 +53,34 @@ export const BottomCard = ({}: Props): JSX.Element => {
       </HStack>
 
       <VStack mt={20}>
-        <HStack space="sm">
-          <Image
-            source={require('../../assets/images/settings.png')}
-            style={{ width: 18, height: 18 }}
-          />
-          <VStack>
-            <MyText poppins="Medium" fontSize={12}>
-              Settings
+        <Pressable onPress={handleNavigate}>
+          <HStack space="sm">
+            <Image
+              source={require('../../assets/images/settings.png')}
+              style={{ width: 18, height: 18 }}
+            />
+            <VStack>
+              <MyText poppins="Medium" fontSize={12}>
+                Settings
+              </MyText>
+              <MyText poppins="Light" fontSize={9}>
+                Change password, Email address
+              </MyText>
+            </VStack>
+          </HStack>
+        </Pressable>
+
+        <Pressable onPress={logout}>
+          <HStack space="sm" mt={20}>
+            <Image
+              source={require('../../assets/images/exit.png')}
+              style={{ width: 18, height: 18 }}
+            />
+            <MyText poppins="Medium" fontSize={10}>
+              Logout
             </MyText>
-            <MyText poppins="Light" fontSize={9}>
-              Change password, Email address
-            </MyText>
-          </VStack>
-        </HStack>
-        <HStack space="sm" mt={20}>
-          <Image
-            source={require('../../assets/images/exit.png')}
-            style={{ width: 18, height: 18 }}
-          />
-          <MyText poppins="Medium" fontSize={10}>
-            Logout
-          </MyText>
-        </HStack>
+          </HStack>
+        </Pressable>
       </VStack>
     </ScrollView>
   );

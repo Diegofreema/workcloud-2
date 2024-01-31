@@ -33,4 +33,5 @@ export const colors = {
   closeBackgroundColor: '#FFD9D9',
   grayText: '#666666',
   nine: '#999999',
+  ripple: '#006898',
 };

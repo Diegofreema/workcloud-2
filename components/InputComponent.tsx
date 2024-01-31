@@ -1,13 +1,13 @@
 import { StyleSheet, View, Text } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { TextInput, TextInputProps } from 'react-native-paper';
 import { useDarkMode } from '../hooks/useDarkMode';
 import { colors } from '../constants/Colors';
 import { fontFamily } from '../constants';
 
-type Props = {
+type Props = TextInputProps & {
   placeholder: string;
   value: string;
-  onChangeText: (text: string) => void;
+  onChangeText?: (text: string) => void;
   secureTextEntry?: boolean;
   keyboardType?: 'default' | 'numeric' | 'email-address' | 'phone-pad';
   label?: string;
@@ -28,6 +28,7 @@ export const InputComponent = ({
   password,
   label,
   numberOfLines,
+  ...props
 }: Props): JSX.Element => {
   const { darkMode } = useDarkMode();
   const handleToggle = (inputId: string) => {
@@ -50,6 +51,8 @@ export const InputComponent = ({
         </Text>
       )}
       <TextInput
+        {...props}
+        activeUnderlineColor="transparent"
         numberOfLines={numberOfLines}
         placeholderTextColor={'black'}
         style={{

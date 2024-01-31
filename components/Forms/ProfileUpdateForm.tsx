@@ -1,19 +1,80 @@
 import { EvilIcons } from '@expo/vector-icons';
-import { Center, KeyboardAvoidingView, VStack } from '@gluestack-ui/themed';
+import {
+  Button,
+  Center,
+  HStack,
+  KeyboardAvoidingView,
+  VStack,
+} from '@gluestack-ui/themed';
+import DatePicker from 'react-native-date-picker';
 import PhoneInput from 'react-native-phone-input';
 import { Image } from 'expo-image';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { StyleSheet, View, Text, Platform, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Platform,
+  ScrollView,
+  Pressable,
+} from 'react-native';
 import { DatePickerInput, DatePickerModal } from 'react-native-paper-dates';
 import * as ImagePicker from 'expo-image-picker';
-import { useCallback, useState } from 'react';
-
+import { useCallback, useRef, useState } from 'react';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { MyText } from '../Ui/MyText';
 import { InputComponent } from '../InputComponent';
-
+import { colors } from '../../constants/Colors';
+import { MyButton } from '../Ui/MyButton';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+const validationSchema = yup.object().shape({
+  firstName: yup.string().required('First name is required'),
+  lastName: yup.string().required('Last name is required'),
+  email: yup.string().email('Invalid email').required('Email is required'),
+  gender: yup.string().required('Gender is required'),
+  date_of_birth: yup.string().required('Date of birth is required'),
+  phoneNumber: yup.string().required('Phone number is required'),
+});
 export const ProfileUpdateForm = (): JSX.Element => {
+  const phoneInputRef = useRef<PhoneInput>(null);
+
+  const {
+    handleSubmit,
+    isSubmitting,
+    values,
+    setFieldValue,
+    errors,
+    touched,
+    handleChange,
+    resetForm,
+  } = useFormik({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      gender: 'male',
+      date_of_birth: '',
+      phoneNumber: '',
+    },
+    validationSchema,
+    onSubmit: () => {
+      setLoading(true);
+      console.log(values);
+      phoneInputRef.current?.setValue(values.phoneNumber);
+      resetForm();
+      setLoading(false);
+    },
+  });
   const [imgUrl, setImgUrl] = useState('https://via.placeholder.com/48x48');
   const [inputDate, setInputDate] = useState<Date | undefined>(undefined);
+  const [loading, setLoading] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [dateOfBirth, setDateOfBirth] = useState(
+    new Date().toISOString().split('T')[0]
+  );
+  const [showPicker, setShowPicker] = useState(false);
+
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
@@ -27,6 +88,33 @@ export const ProfileUpdateForm = (): JSX.Element => {
       console.log('User cancelled image picker');
     }
   };
+
+  const onHideDatePicker = () => {
+    setShowPicker(false);
+  };
+
+  const onShowDatePicker = () => {
+    setShowPicker(true);
+  };
+
+  const onChange = (event: any, selectedDate: any) => {
+    if (event.type === 'set') {
+      const currentDate = selectedDate;
+      setDate(currentDate);
+      if (Platform.OS === 'android') {
+        setDateOfBirth(currentDate.toISOString().split('T')[0]);
+        setFieldValue('date_of_birth', currentDate.toISOString().split('T')[0]);
+        onHideDatePicker();
+      }
+    }
+  };
+
+  const onConfirmIos = () => {
+    setDateOfBirth(inputDate?.toISOString().split('T')[0] || '');
+    setFieldValue('date_of_birth', dateOfBirth);
+    onHideDatePicker();
+  };
+
   return (
     <ScrollView
       contentContainerStyle={{ paddingBottom: 100 }}
@@ -57,26 +145,41 @@ export const ProfileUpdateForm = (): JSX.Element => {
           <>
             <InputComponent
               label="First Name"
-              onChangeText={() => {}}
+              onChangeText={handleChange('firstName')}
               placeholder="First Name"
-              value=""
+              value={values.firstName}
             />
+            {touched.firstName && errors.firstName && (
+              <MyText poppins="Medium" style={styles.error}>
+                {errors.firstName}
+              </MyText>
+            )}
           </>
           <>
             <InputComponent
               label="Last Name"
-              onChangeText={() => {}}
+              onChangeText={handleChange('lastName')}
               placeholder="Last Name"
-              value=""
+              value={values.lastName}
             />
+            {touched.lastName && errors.lastName && (
+              <MyText poppins="Medium" style={styles.error}>
+                {errors.lastName}
+              </MyText>
+            )}
           </>
           <>
             <InputComponent
               label="Email"
-              onChangeText={() => {}}
+              onChangeText={handleChange('email')}
               placeholder="Email"
-              value=""
+              value={values.email}
             />
+            {touched.email && errors.email && (
+              <MyText poppins="Medium" style={styles.error}>
+                {errors.email}
+              </MyText>
+            )}
           </>
 
           <>
@@ -91,12 +194,20 @@ export const ProfileUpdateForm = (): JSX.Element => {
               Phone number
             </MyText>
             <PhoneInput
+              ref={phoneInputRef}
+              initialValue={values.phoneNumber}
               initialCountry="ng"
               textProps={{
                 placeholder: 'Enter a phone number...',
               }}
+              onChangePhoneNumber={handleChange('phoneNumber')}
               style={styles.phone}
             />
+            {touched.phoneNumber && errors.phoneNumber && (
+              <MyText poppins="Medium" style={styles.error}>
+                {errors.phoneNumber}
+              </MyText>
+            )}
           </>
           <>
             <MyText
@@ -127,7 +238,7 @@ export const ProfileUpdateForm = (): JSX.Element => {
                 textAlign: 'left',
                 fontFamily: 'PoppinsMedium',
               }}
-              setSelected={() => {}}
+              setSelected={handleChange('gender')}
               data={[
                 { key: 'male', value: 'Male' },
                 { key: 'female', value: 'Female' },
@@ -135,31 +246,108 @@ export const ProfileUpdateForm = (): JSX.Element => {
               save="key"
               search={false}
             />
+            {touched.gender && errors.gender && (
+              <MyText poppins="Medium" style={styles.error}>
+                {errors.gender}
+              </MyText>
+            )}
           </>
 
           <>
-            <DatePickerInput
-              locale="en"
-              label="Date of birth"
-              value={inputDate}
-              onChange={(d) => setInputDate(d)}
-              inputMode="end"
-              animationType="slide"
-              presentationStyle="pageSheet"
-              style={styles.container}
-              contentStyle={styles.content}
-              mode="flat"
-              activeUnderlineColor="transparent"
-              placeholderTextColor={'#000000'}
-            />
+            {showPicker && Platform.OS === 'android' && (
+              <DateTimePicker
+                mode="date"
+                display="spinner"
+                value={date}
+                onChange={onChange}
+              />
+            )}
+            {showPicker && Platform.OS === 'ios' && (
+              <>
+                <DateTimePicker
+                  mode="date"
+                  display="spinner"
+                  value={date}
+                  onChange={onChange}
+                  style={styles.date}
+                />
+                <HStack justifyContent="space-between" alignItems="center">
+                  <Button
+                    onPress={onHideDatePicker}
+                    style={{
+                      backgroundColor: colors.textGray,
+                      borderRadius: 10,
+                    }}
+                  >
+                    <MyText
+                      poppins="Medium"
+                      fontSize={12}
+                      style={{ color: 'black' }}
+                    >
+                      Cancel
+                    </MyText>
+                  </Button>
+                  <Button
+                    style={{
+                      backgroundColor: colors.dialPad,
+                      borderRadius: 10,
+                    }}
+                    onPress={onConfirmIos}
+                  >
+                    <MyText
+                      poppins="Medium"
+                      fontSize={12}
+                      style={{ color: 'white' }}
+                    >
+                      Confirm
+                    </MyText>
+                  </Button>
+                </HStack>
+              </>
+            )}
+
+            {Platform.OS === 'android' ? (
+              <Pressable onPress={onShowDatePicker}>
+                <InputComponent
+                  editable={false}
+                  label="Date Of Birth"
+                  placeholder="Date Of Birth"
+                  value={values.date_of_birth}
+                />
+              </Pressable>
+            ) : (
+              <InputComponent
+                editable={false}
+                label="Date Of Birth"
+                placeholder="Date Of Birth"
+                value={values.date_of_birth}
+                onPressIn={onShowDatePicker}
+              />
+            )}
+            {touched.date_of_birth && errors.date_of_birth && (
+              <MyText poppins="Medium" style={styles.error}>
+                {errors.date_of_birth}
+              </MyText>
+            )}
           </>
         </VStack>
+
+        <View style={{ marginTop: 50 }}>
+          <MyButton disabled={loading} onPress={() => handleSubmit()}>
+            Save Changes{' '}
+          </MyButton>
+        </View>
       </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  error: { color: 'red', marginTop: 2 },
+  date: {
+    height: 120,
+    marginTop: -10,
+  },
   camera: {
     backgroundColor: 'white',
     shadowColor: '#000',
