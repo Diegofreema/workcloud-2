@@ -29,8 +29,8 @@ export const HeaderNav = ({ title, RightComponent }: Props): JSX.Element => {
         <Pressable
           onPress={onGoBack}
           style={{
-            padding: 5,
-            paddingHorizontal: 10,
+            paddingVertical: 5,
+            paddingRight: 5,
           }}
         >
           <FontAwesome

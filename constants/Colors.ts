@@ -34,4 +34,5 @@ export const colors = {
   grayText: '#666666',
   nine: '#999999',
   ripple: '#006898',
+  summary: '#929292',
 };

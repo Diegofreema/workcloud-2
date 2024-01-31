@@ -28,6 +28,7 @@ import { colors } from '../../constants/Colors';
 import { MyButton } from '../Ui/MyButton';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useSaved } from '../../hooks/useSaved';
 const validationSchema = yup.object().shape({
   firstName: yup.string().required('First name is required'),
   lastName: yup.string().required('Last name is required'),
@@ -38,7 +39,7 @@ const validationSchema = yup.object().shape({
 });
 export const ProfileUpdateForm = (): JSX.Element => {
   const phoneInputRef = useRef<PhoneInput>(null);
-
+  const { onOpen } = useSaved();
   const {
     handleSubmit,
     isSubmitting,
@@ -64,6 +65,7 @@ export const ProfileUpdateForm = (): JSX.Element => {
       phoneInputRef.current?.setValue(values.phoneNumber);
       resetForm();
       setLoading(false);
+      onOpen();
     },
   });
   const [imgUrl, setImgUrl] = useState('https://via.placeholder.com/48x48');
