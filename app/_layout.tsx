@@ -104,34 +104,10 @@ function RootLayoutNav() {
           flex: 1,
         }}
       >
-        <Stack initialRouteName="(tabs)">
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="connections" options={{ headerShown: false }} />
-          <Stack.Screen name="board" options={{ headerShown: false }} />
-
-          <Stack.Screen
-            name="create-workspace"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="(organization)"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="(myProfile)/[id]"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="edit-profile/[userId]"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="calls/[records]"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name="settings" options={{ headerShown: false }} />
-        </Stack>
+        <Stack
+          initialRouteName="(tabs)"
+          screenOptions={{ headerShown: false }}
+        />
       </SafeAreaView>
     </ThemeProvider>
   );

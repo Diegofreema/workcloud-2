@@ -3,13 +3,20 @@ import { useRouter } from 'expo-router';
 import { StyleSheet, View, Text } from 'react-native';
 import { useDarkMode } from '../hooks/useDarkMode';
 import { Pressable } from 'react-native';
+import { VStack } from '@gluestack-ui/themed';
+import { colors } from '../constants/Colors';
 
 type Props = {
   title: string;
   RightComponent?: () => JSX.Element;
+  subTitle?: string;
 };
 
-export const HeaderNav = ({ title, RightComponent }: Props): JSX.Element => {
+export const HeaderNav = ({
+  title,
+  RightComponent,
+  subTitle,
+}: Props): JSX.Element => {
   const router = useRouter();
   const { darkMode } = useDarkMode();
 
@@ -39,16 +46,30 @@ export const HeaderNav = ({ title, RightComponent }: Props): JSX.Element => {
             size={30}
           />
         </Pressable>
-        <Text
-          style={{
-            color: darkMode ? 'white' : 'black',
-            fontFamily: 'PoppinsBold',
+        <VStack>
+          <Text
+            style={{
+              color: darkMode ? 'white' : 'black',
+              fontFamily: 'PoppinsBold',
+              fontSize: 15,
+            }}
+          >
+            {title}
+          </Text>
 
-            fontSize: 15,
-          }}
-        >
-          {title}
-        </Text>
+          {subTitle && (
+            <Text
+              style={{
+                color: colors.grayText,
+                fontFamily: 'PoppinsLight',
+                fontSize: 8,
+                marginTop: -8,
+              }}
+            >
+              {subTitle}
+            </Text>
+          )}
+        </VStack>
       </View>
 
       {RightComponent && <RightComponent />}

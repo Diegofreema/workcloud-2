@@ -65,7 +65,7 @@ const images = [
   },
 ];
 
-const OrganizationItems = ({ name, text, website }: SubProps) => {
+export const OrganizationItems = ({ name, text, website }: SubProps) => {
   const { darkMode } = useDarkMode();
 
   if (website) {

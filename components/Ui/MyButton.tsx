@@ -8,6 +8,7 @@ type Props = ButtonProps & {
   contentStyle?: StyleProp<ViewStyle>;
   buttonColor?: string;
   textColor?: string;
+  style?: StyleProp<ViewStyle>;
 };
 
 export const MyButton = ({
@@ -15,6 +16,7 @@ export const MyButton = ({
   contentStyle,
   buttonColor = colors.dialPad,
   textColor = 'white',
+  style,
   ...props
 }: Props): JSX.Element => {
   return (
@@ -24,11 +26,15 @@ export const MyButton = ({
       contentStyle={[{ padding: 5 }, contentStyle]}
       textColor={textColor}
       buttonColor={buttonColor}
-      style={{
-        borderRadius: 5,
-      }}
+      style={[
+        {
+          borderRadius: 5,
+        },
+        style,
+      ]}
       labelStyle={{
         fontFamily: fontFamily.Medium,
+        fontSize: 9,
       }}
     >
       {children}

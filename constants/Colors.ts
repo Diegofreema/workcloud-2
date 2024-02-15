@@ -35,4 +35,5 @@ export const colors = {
   nine: '#999999',
   ripple: '#006898',
   summary: '#929292',
+  cod: '#C0D1FE',
 };

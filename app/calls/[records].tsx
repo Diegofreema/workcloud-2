@@ -1,10 +1,10 @@
 import { View, Text, ScrollView } from 'react-native';
 import React from 'react';
 import { EvilIcons } from '@expo/vector-icons';
+import { HStack } from '@gluestack-ui/themed';
 
 import { HeaderNav } from '../../components/HeaderNav';
 import { defaultStyle } from '../../constants/index';
-import { HStack } from '@gluestack-ui/themed';
 import { VideoPreview } from '../../components/Ui/VideoPreview';
 import { call } from '../../components/LoggedInuser/BottomCard';
 
