@@ -19,7 +19,8 @@ export const WorkspaceDetails = ({
       <Text
         style={{
           color: darkMode ? colors.white : colors.black,
-          fontWeight: 'bold',
+          fontFamily: 'PoppinsBold',
+          fontSize: 8,
         }}
       >
         {name}

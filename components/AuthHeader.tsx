@@ -52,8 +52,9 @@ export const AuthHeader = ({ path, style }: Props) => {
         <Text
           style={{
             color: darkMode ? 'white' : 'black',
-            fontWeight: 'bold',
-            fontSize: 20,
+
+            fontSize: 15,
+            fontFamily: 'PoppinsBold',
           }}
         >
           {path}

@@ -7,6 +7,8 @@ import { ActivityIndicator, Text } from 'react-native-paper';
 import { defaultStyle } from '../../constants';
 import { WorkspaceItem } from '../../components/WorkspaceItem';
 import { EmptyText } from '../../components/EmptyText';
+import { ErrorComponent } from '../../components/Ui/ErrorComponent';
+import { LoadingComponent } from '../../components/Ui/LoadingComponent';
 
 type Props = {};
 
@@ -19,37 +21,11 @@ const workspace = (props: Props) => {
   console.log(data?.orgs.length);
 
   if (isLoading || isPending || isFetching) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          ...defaultStyle,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <ActivityIndicator size="large" color="#000" />
-      </View>
-    );
+    return <LoadingComponent />;
   }
 
   if (error) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          ...defaultStyle,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Text
-          style={{ color: darkMode ? 'white' : 'black', fontWeight: 'bold' }}
-        >
-          Something went wrong, please try again
-        </Text>
-      </View>
-    );
+    return <ErrorComponent refetch={refetch} />;
   }
 
   return (
@@ -67,7 +43,8 @@ const workspace = (props: Props) => {
           ListHeaderComponent={() => (
             <Text
               style={{
-                fontWeight: 'bold',
+                fontFamily: 'PoppinsBold',
+                fontSize: 14,
                 color: darkMode ? 'white' : 'black',
               }}
               variant="titleMedium"
@@ -86,15 +63,16 @@ const workspace = (props: Props) => {
             <Text
               style={{
                 color: darkMode ? 'white' : 'black',
-                fontWeight: 'bold',
+                fontFamily: 'PoppinsMedium',
+                fontSize: 14,
               }}
             >
               No workspace yet
             </Text>
           )}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item?.id?.toString()}
           showsVerticalScrollIndicator={false}
-          refreshing={isFetching}
+          refreshing={isPending}
           onRefresh={refetch}
           ListEmptyComponent={() => (
             <EmptyText text="You have no organizations yet" />

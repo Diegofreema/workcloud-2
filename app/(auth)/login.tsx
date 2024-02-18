@@ -25,7 +25,7 @@ const SignInWithOAuth = () => {
       if (createdSessionId) {
         setActive!({ session: createdSessionId });
 
-        router.push('/(tabs)');
+        router.replace('/(tabs)/');
       }
     } catch (err) {
       console.error('OAuth error', err);
@@ -40,6 +40,7 @@ const SignInWithOAuth = () => {
           marginTop: 20,
 
           color: darkMode ? 'white' : colors.textGray,
+          fontFamily: 'PoppinsBold',
         }}
       >
         Login to continue accessing organizations
@@ -58,6 +59,9 @@ const SignInWithOAuth = () => {
           icon={'google'}
           uppercase
           rippleColor={'#000'}
+          labelStyle={{
+            fontFamily: 'PoppinsMedium',
+          }}
         >
           Sign in with
         </Button>

@@ -60,6 +60,7 @@ const Edit = (props: Props) => {
   const [imageName, setImageName] = useState<ArrayBuffer>();
   const [imageType, setImageType] = useState('');
   const [image, setImage] = useState<string>('');
+  console.log('🚀 ~ Edit ~ image:', image);
   const { isLoaded, isSignedIn, user } = useUser();
   const { editId } = useLocalSearchParams();
   const [show, setShow] = useState(false);
@@ -205,7 +206,9 @@ const Edit = (props: Props) => {
           location,
           opening_time: startTime,
           owner_id: user?.id,
-          image_url: image.split('/').slice(0, -1).join('/'),
+          image_url: image.includes('ArrayBuffer')
+            ? image.split('/').slice(0, -1).join('/')
+            : image,
         })
         .eq('id', id.replace(')', ''));
 
@@ -297,18 +300,10 @@ const Edit = (props: Props) => {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ paddingVertical: 20 }}
     >
-      <AuthHeader />
-      <View style={{ marginBottom: 20 }} />
-
-      <AuthTitle>Edit Organization</AuthTitle>
+      <AuthHeader path="Edit Organization" />
 
       <View style={{ marginTop: 20, flex: 1 }}>
         <View style={{ flex: 0.6, gap: 10 }}>
-          <Text
-            style={{ color: darkMode ? 'white' : 'black', fontWeight: 'bold' }}
-          >
-            Organization image
-          </Text>
           <View style={{ alignItems: 'center', justifyContent: 'center' }}>
             {image.includes('png') || image.includes('jpg') ? (
               <View
@@ -458,7 +453,13 @@ const Edit = (props: Props) => {
             )}
           </>
           <>
-            <Text style={{ marginBottom: 5, fontWeight: 'bold' }}>
+            <Text
+              style={{
+                marginBottom: 5,
+                fontFamily: 'PoppinsBold',
+                fontSize: 12,
+              }}
+            >
               Work Days
             </Text>
             <View style={{ flexDirection: 'row', gap: 10 }}>
@@ -472,7 +473,14 @@ const Edit = (props: Props) => {
                   />
                 </View>
                 {touched.startDay && errors.startDay && (
-                  <Text style={{ color: 'red', fontWeight: 'bold' }}>
+                  <Text
+                    style={{
+                      color: 'red',
+
+                      fontFamily: 'PoppinsBold',
+                      fontSize: 12,
+                    }}
+                  >
                     {errors.startDay}
                   </Text>
                 )}
@@ -495,13 +503,20 @@ const Edit = (props: Props) => {
             </View>
           </>
           <>
-            <Text style={{ marginBottom: 5, fontWeight: 'bold' }}>
+            <Text
+              style={{
+                marginBottom: 5,
+
+                fontFamily: 'PoppinsBold',
+                fontSize: 12,
+              }}
+            >
               Opening And Closing Time
             </Text>
             <View style={{ flexDirection: 'row', gap: 10 }}>
               <>
                 <Pressable onPress={showMode} style={styles2.border}>
-                  <Text>
+                  <Text style={{ fontFamily: 'PoppinsLight', fontSize: 12 }}>
                     {' '}
                     {`${
                       dateFormat(startTime, 'HH:MM') || ' Opening Time'
@@ -528,7 +543,7 @@ const Edit = (props: Props) => {
               </>
               <>
                 <Pressable onPress={showMode2} style={styles2.border}>
-                  <Text>
+                  <Text style={{ fontFamily: 'PoppinsLight', fontSize: 12 }}>
                     {' '}
                     {`${dateFormat(endTime, 'HH:MM') || ' Closing Time'}`}{' '}
                   </Text>
@@ -560,6 +575,7 @@ const Edit = (props: Props) => {
             onPress={() => handleSubmit()}
             buttonColor={colors.buttonBlue}
             textColor={colors.white}
+            labelStyle={{ fontFamily: 'PoppinsMedium', fontSize: 12 }}
           >
             {isSubmitting ? 'Updating...' : 'Update'}
           </Button>

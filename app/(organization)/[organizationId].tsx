@@ -22,6 +22,7 @@ import { useAuth } from '@clerk/clerk-expo';
 import MyLoader from '../../components/MyLoader';
 import { WorkspaceDetails } from '../../components/WorkspaceDetails';
 import { format, sub } from 'date-fns';
+import { ErrorComponent } from '../../components/Ui/ErrorComponent';
 
 type Props = {};
 type SubProps = {
@@ -79,7 +80,15 @@ export const OrganizationItems = ({ name, text, website }: SubProps) => {
           name={name}
           size={24}
         />
-        <Text style={{ color: colors.buttonBlue }}>{text}</Text>
+        <Text
+          style={{
+            color: colors.buttonBlue,
+            fontFamily: 'PoppinsBold',
+            fontSize: 10,
+          }}
+        >
+          {text}
+        </Text>
       </Pressable>
     );
   }
@@ -90,7 +99,13 @@ export const OrganizationItems = ({ name, text, website }: SubProps) => {
         name={name}
         size={24}
       />
-      <Text style={{ color: darkMode ? colors.white : colors.textGray }}>
+      <Text
+        style={{
+          color: darkMode ? colors.white : colors.textGray,
+          fontFamily: 'PoppinsBold',
+          fontSize: 10,
+        }}
+      >
         {text}
       </Text>
     </View>
@@ -101,7 +116,7 @@ const OrganizationDetails = (props: Props) => {
   const { darkMode } = useDarkMode();
   const router = useRouter();
   const { userId } = useAuth();
-  const { data, isFetching, isLoading, isPending, error } =
+  const { data, isFetching, isLoading, isPending, error, refetch } =
     useGetSingleOrg(organizationId);
   const {
     data: profile,
@@ -119,7 +134,7 @@ const OrganizationDetails = (props: Props) => {
   }
 
   if (error) {
-    return <Text>Something went wrong</Text>;
+    return <ErrorComponent refetch={refetch} />;
   }
 
   const organization = data.orgs[0];
@@ -151,8 +166,9 @@ const OrganizationDetails = (props: Props) => {
             <View>
               <Text
                 style={{
-                  fontWeight: 'bold',
-                  fontSize: 18,
+                  fontFamily: 'PoppinsBold',
+
+                  fontSize: 14,
                   color: darkMode ? colors.white : colors.black,
                 }}
               >
@@ -160,8 +176,8 @@ const OrganizationDetails = (props: Props) => {
               </Text>
               <Text
                 style={{
-                  fontWeight: '400',
-                  fontSize: 13,
+                  fontFamily: 'PoppinsMedium',
+                  fontSize: 10,
                   color: darkMode ? colors.white : colors.black,
                 }}
               >
@@ -177,6 +193,7 @@ const OrganizationDetails = (props: Props) => {
               textColor="white"
               buttonColor={colors.buttonBlue}
               style={{ borderRadius: 5 }}
+              labelStyle={{ fontFamily: 'PoppinsMedium', fontSize: 12 }}
             >
               Edit
             </Button>
@@ -192,8 +209,8 @@ const OrganizationDetails = (props: Props) => {
         >
           <Text
             style={{
-              fontWeight: '400',
-              fontSize: 17,
+              fontFamily: 'PoppinsLight',
+              fontSize: 13,
               color: darkMode ? colors.white : colors.black,
             }}
           >
@@ -209,7 +226,8 @@ const OrganizationDetails = (props: Props) => {
           >
             <Text
               style={{
-                fontWeight: 'bold',
+                fontFamily: 'PoppinsBold',
+                fontSize: 10,
 
                 color: darkMode ? colors.white : colors.black,
                 textTransform: 'uppercase',
@@ -225,7 +243,13 @@ const OrganizationDetails = (props: Props) => {
                   backgroundColor: '#CCF2D9',
                 }}
               >
-                <Text style={{ color: '#00C041' }}>
+                <Text
+                  style={{
+                    color: '#00C041',
+                    fontFamily: 'PoppinsBold',
+                    fontSize: 10,
+                  }}
+                >
                   {format(newOpeningTime, 'hh:mm aaa')}
                 </Text>
               </View>
@@ -238,7 +262,13 @@ const OrganizationDetails = (props: Props) => {
                   borderRadius: 5,
                 }}
               >
-                <Text style={{ color: '#D61B0C' }}>
+                <Text
+                  style={{
+                    color: '#D61B0C',
+                    fontFamily: 'PoppinsBold',
+                    fontSize: 10,
+                  }}
+                >
                   {format(newCloseTime, 'hh:mm aaa')}
                 </Text>
               </View>
@@ -256,7 +286,8 @@ const OrganizationDetails = (props: Props) => {
           <OrganizationItems name="link" text={organization.website} website />
           <Text
             style={{
-              fontWeight: 'bold',
+              fontFamily: 'PoppinsBold',
+              fontSize: 12,
               color: darkMode ? colors.white : colors.black,
             }}
           >

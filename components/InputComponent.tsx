@@ -42,8 +42,8 @@ export const InputComponent = ({
         <Text
           style={{
             marginBottom: 5,
-            fontFamily: fontFamily.Medium,
-            fontSize: 11,
+            fontFamily: fontFamily.Bold,
+            fontSize: 12,
             color: darkMode ? 'white' : 'black',
           }}
         >

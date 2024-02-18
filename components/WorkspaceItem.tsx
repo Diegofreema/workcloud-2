@@ -30,7 +30,8 @@ export const WorkspaceItem = ({ item }: Props): JSX.Element => {
       />
       <Text
         style={{
-          fontWeight: 'bold',
+          fontFamily: 'PoppinsMedium',
+          fontSize: 12,
           color: darkMode ? 'white' : 'black',
           textTransform: 'capitalize',
         }}

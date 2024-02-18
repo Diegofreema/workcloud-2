@@ -45,7 +45,13 @@ export default function TabOneScreen() {
           <HeadingText link="/connections" />
         </View>
       ) : (
-        <Text style={{ color: darkMode ? 'white' : 'black' }}>
+        <Text
+          style={{
+            color: darkMode ? 'white' : 'black',
+            fontFamily: 'PoppinsBold',
+            marginBottom: 10,
+          }}
+        >
           Login in to see your connections
         </Text>
       )}

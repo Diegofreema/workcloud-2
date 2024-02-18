@@ -26,15 +26,18 @@ const account = (props: Props) => {
           justifyContent: 'center',
         }}
       >
-        <Button
-          buttonColor={colors.buttonBlue}
-          onPress={() => router.push('/login')}
-          mode="contained-tonal"
-          style={{ width: width * 0.4 }}
-          textColor="white"
-        >
-          Sign in
-        </Button>
+        {!isSignedIn && (
+          <Button
+            buttonColor={colors.buttonBlue}
+            onPress={() => router.push('/login')}
+            mode="contained-tonal"
+            style={{ width: width * 0.4 }}
+            textColor="white"
+            labelStyle={{ color: 'white', fontFamily: 'PoppinsMedium' }}
+          >
+            Sign in
+          </Button>
+        )}
 
         {isSignedIn && (
           <Button

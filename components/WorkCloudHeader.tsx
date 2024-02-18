@@ -17,7 +17,8 @@ export const WorkCloudHeader = ({}: Props): JSX.Element => {
         <Text
           variant="titleLarge"
           style={{
-            fontWeight: 'bold',
+            fontFamily: 'PoppinsBold',
+            fontSize: 20,
             color: darkMode ? colors.white : colors.black,
           }}
         >
@@ -64,6 +65,8 @@ export const WorkCloudHeader = ({}: Props): JSX.Element => {
           style={{
             maxWidth: 100,
             color: darkMode ? colors.white : colors.black,
+            fontFamily: 'PoppinsBold',
+            fontSize: 12,
           }}
         >
           Create an organization
